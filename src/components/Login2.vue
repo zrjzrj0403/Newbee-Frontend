@@ -76,17 +76,17 @@ export default {
   methods:{
     login(){
       this.$refs.loginForm.validate(valid=>{
-        console.log(valid)
         if(valid){
           let data=this.$qs.stringify({name:this.loginForm.name,pwd:this.loginForm.password})
-          this.$axios.post('/api/admin_login',data)
+          this.$axios.post('admin/api/login/',data)
             .then(res=>{
-              if(res.data.info ==='OK'){
-                this.$router.push('/home3')
-                // console.log(res)
-              }else{
-                this.$alert('用户名或密码不正确，请重新输入')
-              }
+              console.log(res);
+              // if(res.data.info ==='OK'){
+              //   this.$router.push('/home3')
+              //   // console.log(res)
+              // }else{
+              //   this.$alert('用户名或密码不正确，请重新输入')
+              // }
             })
         }else{
           return false

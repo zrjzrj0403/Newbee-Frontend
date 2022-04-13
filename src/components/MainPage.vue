@@ -36,14 +36,14 @@ export default {
     }
   },
   methods: {
-    get_cookie() {
-      this.$axios.post('/api/api_get_cookie')
-        .then(res => {
-          if(res.data.info==='OK'){
-            this.name=res.data.name
-          }
-        })
-    },
+    // get_cookie() {
+    //   this.$axios.post('/api/api_get_cookie')
+    //     .then(res => {
+    //       if(res.data.info==='OK'){
+    //         this.name=res.data.name
+    //       }
+    //     })
+    // },
     logout(){
       this.$axios.get('/api/api_logout')
       .then(res=>{
@@ -54,10 +54,10 @@ export default {
     }
   },
     created() {
-      this.get_cookie()
+      // this.get_cookie()
     },
     beforeUpdate() {
-      this.get_cookie()
+      // this.get_cookie()
     }
 }
 </script>

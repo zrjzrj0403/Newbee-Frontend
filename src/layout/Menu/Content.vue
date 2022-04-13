@@ -31,14 +31,14 @@ export default {
       //点击切换按钮修改父组件数据 isCollapse
       this.$emit('changeCollapse')
     },
-     get_cookie() {
-      this.$axios.post('/api/api_get_cookie')
-        .then(res => {
-          if(res.data.info==='OK'){
-            this.name=res.data.name
-          }
-        })
-    },
+    //  get_cookie() {
+    //   this.$axios.post('/api/api_get_cookie')
+    //     .then(res => {
+    //       if(res.data.info==='OK'){
+    //         this.name=res.data.name
+    //       }
+    //     })
+    // },
     logout(){
       this.$axios.get('/api/api_logout')
       .then(res=>{
