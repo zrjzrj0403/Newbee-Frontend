@@ -80,13 +80,12 @@ export default {
           let data=this.$qs.stringify({name:this.loginForm.name,pwd:this.loginForm.password})
           this.$axios.post('admin/api/login/',data)
             .then(res=>{
-              console.log(res);
-              // if(res.data.info ==='OK'){
-              //   this.$router.push('/home3')
-              //   // console.log(res)
-              // }else{
-              //   this.$alert('用户名或密码不正确，请重新输入')
-              // }
+              if(res.data.ret===0){
+                this.$router.push('/home3')
+                // console.log(res)
+              }else{
+                this.$alert('用户名或密码不正确，请重新输入')
+              }
             })
         }else{
           return false
