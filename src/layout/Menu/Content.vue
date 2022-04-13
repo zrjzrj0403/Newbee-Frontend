@@ -48,10 +48,10 @@ export default {
     }
   },
    created() {
-      this.get_cookie()
+      // this.get_cookie()
     },
     beforeUpdate() {
-      this.get_cookie()
+      // this.get_cookie()
     }
 }
 </script>

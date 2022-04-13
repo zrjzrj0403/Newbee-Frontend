@@ -80,6 +80,7 @@ export default {
           let data=this.$qs.stringify({name:this.loginForm.name,pwd:this.loginForm.password})
           this.$axios.post('admin/api/login/',data)
             .then(res=>{
+              console.log(res);
               if(res.data.ret===0){
                 this.$router.push('/home3')
                 // console.log(res)
