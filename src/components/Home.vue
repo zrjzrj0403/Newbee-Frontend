@@ -44,7 +44,7 @@ export default {
     //     })
     // },
     logout(){
-      this.$axios.get('/api/api_logout')
+      this.$axios.get('/api/admin/logout')
       .then(res=>{
         location.reload()
         }

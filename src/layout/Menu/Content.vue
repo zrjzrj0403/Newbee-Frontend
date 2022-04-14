@@ -40,9 +40,20 @@ export default {
     //     })
     // },
     logout(){
-      this.$axios.get('/api/api_logout')
+      this.$axios.delete('/api/admin/logout')
       .then(res=>{
-       this.$router.push('/home')
+        if(res.data.ret===0)
+        {
+             this.$router.push('/login');
+        }
+        else
+        {
+           this.$message({
+                type: 'error',
+                message: '登录已过期，请重新登录'
+              })
+          this.$router.push('/login');
+        }
         }
       )
     }

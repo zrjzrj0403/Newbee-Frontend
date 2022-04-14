@@ -12,6 +12,7 @@ import 'default-passive-events'
 // axios.defaults.withCredentials=true;
 
 Vue.config.productionTip = false
+axios.defaults.withCredentials = true;
 Vue.prototype.$axios=axios
 Vue.prototype.$qs=qs
 Vue.use(ElementUI);
