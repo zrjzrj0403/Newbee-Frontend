@@ -78,7 +78,7 @@ export default {
       this.$refs.loginForm.validate(valid=>{
         if(valid){
           let data=this.$qs.stringify({name:this.loginForm.name,pwd:this.loginForm.password})
-          this.$axios.post('admin/api/login/',data)
+          this.$axios.post('api/admin/login/',data)
             .then(res=>{
               console.log(res);
               if(res.data.ret===0){
