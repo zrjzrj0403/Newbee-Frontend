@@ -1,5 +1,5 @@
 {
-  "name": "vue01",
+  "name": "NB-vue",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "“zrjzrj0403” <zrjzrj0403@163.com>",
@@ -52,7 +52,7 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "^2.11.5",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
