@@ -13,7 +13,6 @@
     "default-passive-events": "^2.0.0",
     "element-ui": "^2.15.6",
     "qs": "^6.10.3",
-    "vue": "^2.5.2",
     "vue-axios": "^3.4.1",
     "vue-router": "^3.0.1"
   },

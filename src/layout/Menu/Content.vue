@@ -40,11 +40,11 @@ export default {
     //     })
     // },
     logout(){
-      this.$axios.delete('/api/admin/logout')
+      this.$axios.delete('/api/admin/logout/')
       .then(res=>{
         if(res.data.ret===0)
         {
-             this.$router.push('/login');
+             this.$router.push('/login/');
         }
         else
         {
@@ -52,7 +52,7 @@ export default {
                 type: 'error',
                 message: '登录已过期，请重新登录'
               })
-          this.$router.push('/login');
+          this.$router.push('/login/');
         }
         }
       )

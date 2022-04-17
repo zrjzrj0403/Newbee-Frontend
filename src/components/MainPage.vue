@@ -6,7 +6,7 @@
             <el-link :underline="false" href="/" class="el-icon-s-home h-6">公告编辑</el-link>
           </el-col>
           <el-col :span="8">
-            <h1 class="h-6 m-auto">newbee英语</h1>
+            <h1 class="h-6 m-auto">Newbee-English</h1>
           </el-col>
           <el-col :span="8">
             <span v-if="name===undefined">

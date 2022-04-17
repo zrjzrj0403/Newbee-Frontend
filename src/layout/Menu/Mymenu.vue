@@ -12,7 +12,7 @@
       router
       :collapse="isCollapse">
      <el-menu-item >
-        <span class="title" slot="title">newbee英语</span>
+        <span class="title" slot="title">Newbee-English</span>
       </el-menu-item>
       <el-menu-item index="/home3">
         <i class="el-icon-menu"></i>

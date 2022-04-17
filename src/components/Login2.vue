@@ -6,7 +6,7 @@
           <el-link :underline="false" href="/" class="el-icon-s-home h-6">首页</el-link>
         </el-col>
         <el-col :span="8">
-          <h1 class="h-6 m-auto">newbee英语</h1>
+          <h1 class="h-6 m-auto">Newbee-English</h1>
         </el-col>
         <el-col :span="8">
                   <span v-if="name===undefined">
@@ -84,7 +84,7 @@ export default {
             .then(res => {
               console.log(res);
               if (res.data.ret === 0) {
-                this.$router.push('/home3')
+                this.$router.push('/home3/')
                 // console.log(res)
               } else {
                 this.$alert('用户名或密码不正确，请重新输入')

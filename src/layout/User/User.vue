@@ -75,7 +75,7 @@ export default {
         this.val=val;
         // let  data=this.$qs.stringify({name:val})
         //     this.$axios.post('/api/api_search',data)
-               this.$axios.get('/api/api_search',{params:{name:val,pagesize:12,num:num}})
+               this.$axios.get('/api/api_search/',{params:{name:val,pagesize:12,num:num}})
         .then(res=> {
           if (res.data.info === 'OK') {
             console.log(this.num);
@@ -110,7 +110,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-                this.$axios.delete('/api/api_deleteuser', {params: {rows},
+                this.$axios.delete('/api/api_deleteuser/', {params: {rows},
           paramsSerializer: params => {
             return this.$qs.stringify(params, { indices: false })
         }})
@@ -147,7 +147,7 @@ export default {
           type: 'warning'
         }).then(() => {
           // let  data=this.$qs.stringify({rows:row.id})
-          this.$axios.delete('/api/api_deleteuser',{params: {rows:row.id}})
+          this.$axios.delete('/api/api_deleteuser/',{params: {rows:row.id}})
          .then(res=>{
            if(res.data.info==='OK')
            {
@@ -174,7 +174,7 @@ export default {
     },
 
     get_information(pagenumber){
-      this.$axios.get('/api/api_get_information',{params:{pagenumber:pagenumber,pagesize:12}})
+      this.$axios.get('/api/api_get_information/',{params:{pagenumber:pagenumber,pagesize:12}})
       .then(res => {
           if(res.data.info==='OK'){
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
