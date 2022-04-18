@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      default-active="/home3"
+      :default-active=act
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -50,11 +50,14 @@
 export default {
   props:['isCollapse'],//接收的数据
   name: "Mymenu",
-  // data(){
-  //   return{
-  //     isCollapse:false
-  //   }
-  // }
+  data(){
+    return{
+      act:''
+    };
+  },
+   mounted() {
+    this.act = this.$route.path;
+  },
   methods:{
     handleOpen(key, keyPath) {
         console.log(key, keyPath);

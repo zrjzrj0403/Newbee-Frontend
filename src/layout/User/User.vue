@@ -82,11 +82,11 @@ export default {
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
             this.tableData = res.data.list;
             this.type=2;
-            this.total=Math.ceil(res.data.total/12);
+            this.total=res.data.total;
           }
           else {
             this.type=2;
-            this.total=Math.ceil(res.data.total/12);
+            this.total=res.data.total;
           }
         })
       }
@@ -110,12 +110,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-                this.$axios.delete('/api/api_deleteuser/', {params: {rows},
+                this.$axios.delete('/api/admin/list_user/', {params: {userid:rows},
           paramsSerializer: params => {
             return this.$qs.stringify(params, { indices: false })
         }})
          .then(res=>{
-           if(res.data.info==='OK')
+           if(res.data.ret===0)
            {
                 this.$message({
                 type: 'success',
@@ -147,9 +147,9 @@ export default {
           type: 'warning'
         }).then(() => {
           // let  data=this.$qs.stringify({rows:row.id})
-          this.$axios.delete('/api/api_deleteuser/',{params: {rows:row.id}})
+          this.$axios.delete('/api/admin/list_user/',{params: {userid:row.id}})
          .then(res=>{
-           if(res.data.info==='OK')
+           if(res.data.ret===0)
            {
                 this.$message({
                 type: 'success',
