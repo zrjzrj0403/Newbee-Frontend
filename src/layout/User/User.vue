@@ -15,7 +15,7 @@
     <div class="wrapper">
       <el-table border :data="tableData" style="width: 100%"  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="user2_name" label="用户名称" width="180"></el-table-column>
+        <el-table-column prop="name" label="用户名称" width="180"></el-table-column>
         <el-table-column prop="id" label="用户id" width="180"></el-table-column>
         <el-table-column prop="numm" label="单选数量" width="180"></el-table-column>
         <el-table-column prop="numc" label="完型数量" width="180"></el-table-column>
@@ -51,7 +51,7 @@ export default {
       tableChecked: [],
       ids:[],
       total:10,
-      pageSize:1,
+      pageSize:12,
       page:1,
       type:1,
       num:1,
@@ -75,12 +75,12 @@ export default {
         this.val=val;
         // let  data=this.$qs.stringify({name:val})
         //     this.$axios.post('/api/api_search',data)
-               this.$axios.get('/api/api_search/',{params:{name:val,pagesize:12,num:num}})
+               this.$axios.get('/api/admin/designated_user/',{params:{name:val,pagesize:12,pagenumber:num}})
         .then(res=> {
-          if (res.data.info === 'OK') {
+          if (res.data.ret === 0) {
             console.log(this.num);
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
-            this.tableData = res.data.list.dataid;
+            this.tableData = res.data.list;
             this.type=2;
             this.total=Math.ceil(res.data.total/12);
           }
@@ -174,13 +174,14 @@ export default {
     },
 
     get_information(pagenumber){
-      this.$axios.get('/api/api_get_information/',{params:{pagenumber:pagenumber,pagesize:12}})
+      this.$axios.get('/api/admin/list_user/',{params:{pagenumber:pagenumber,pagesize:12}})
       .then(res => {
-          if(res.data.info==='OK'){
+        console.log(res)
+          if(res.data.ret===0){
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
-            console.log(res.data.list)
+            console.log(res.data)
             this.tableData=res.data.list;
-            this.total=Math.ceil(res.data.total/12);
+            this.total=res.data.total;
         console.log(res)
           }
         })
