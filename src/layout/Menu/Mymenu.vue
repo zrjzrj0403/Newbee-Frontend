@@ -52,19 +52,77 @@ export default {
   name: "Mymenu",
   data(){
     return{
-      act:''
+      act:'',
+      path:''
     };
   },
-   mounted() {
-    this.act = this.$route.path;
+  created() {
+    this.act=this.$route.path;
   },
+   watch: {
+     $route(to, from) {
+       //监听路由变化
+       this.path=window.location.hash.split('?')[0].replace(/(#|\/)/g,'')
+        if(this.path==='details')
+    {
+      this.type=this.$route.query.type;
+      console.log(this.type);
+      if(this.type==='choice_question')
+       {
+        this.act='/question/multiplechoice';
+       }
+       else if(this.type==='cloze_question')
+       {
+        this.act='/question/cloze';
+       }
+       else
+       {
+         this.act='/question/readingcomprehension';
+       }
+    }
+    else
+    {
+        this.act = this.$route.path;
+    }
+     },
+   },
+  // mounted() {
+    // if(this.$route.path==='/details')
+    // {
+    //   this.type=window.localStorage.getItem('type')
+    //   if(this.type==='choice_question')
+    //    {
+    //     this.act='/question/multiplechoice';
+    //    }
+    //    else if(this.type==='cloze_question')
+    //    {
+    //     this.act='/question/cloze';
+    //    }
+    //    else
+    //    {
+    //      this.act='/question/readingcomprehension';
+    //    }
+    // }
+    // else
+    // {
+    //     this.act = this.$route.path;
+    // }
+    // window.addEventListener('hashchange', () => {
+    //   let currentPath = window.location.hash.slice(1)
+    //   this.act=currentPath;
+    // }, false)
+     // console.log(this.act);
+  // },
   methods:{
     handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
-      }
+      },
+    getBreadcrumb(){
+      console.log('1');
+    }
   }
 }
 </script>

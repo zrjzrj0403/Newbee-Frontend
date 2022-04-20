@@ -1,7 +1,10 @@
 <template>
   <div class="box">
     <div class="title1">
-      <h4>首页/公告管理</h4>
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/home3' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>公告管理</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div style="width:50%;margin:auto">
       <div style="width:50%;margin:auto">

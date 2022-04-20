@@ -35,6 +35,17 @@ export default {
       name:undefined,
     }
   },
+
+mounted () {
+    // 检测浏览器路由改变页面不刷新问题,hash模式的工作原理是hashchange事件
+    window.addEventListener('hashchange', () => {
+      let currentPath = window.location.hash.slice(1)
+      // if (this.$route.path !== currentPath) {
+      //   this.$router.push(currentPath)
+      // }
+      console.log(currentPath)
+    }, false)
+  },
   methods: {
     // get_cookie() {
     //   this.$axios.post('/admin/api_get_cookie')

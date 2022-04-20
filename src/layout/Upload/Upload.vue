@@ -1,7 +1,10 @@
 <template>
  <div class="total">
   <div class="title1">
-    <h4>首页/题库管理/单项选择</h4>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home3' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>题目上传</el-breadcrumb-item>
+      </el-breadcrumb>
   </div>
    <div class="box">
       <el-steps :space="400" align-center :active="step" finish-status="success" >
