@@ -15,6 +15,7 @@
 </el-steps>
    </div>
       <el-button class='button' type="success" icon="el-icon-check" circle @click="changeStrp"></el-button>
+
 </div>
 </template>
 

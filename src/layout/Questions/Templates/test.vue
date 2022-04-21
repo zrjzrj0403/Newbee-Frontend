@@ -10,7 +10,7 @@
 <div class="user">
     <!--    搜索区域-->
     <div class="userheader">
-      <el-input v-model="input" placeholder="请输入内容"></el-input>
+      <el-input  @keyup.enter.native="get_information(1,input)" v-model="input" placeholder="请输入内容"></el-input>
       <el-button type="primary">查询</el-button>
       <el-button type="primary">添加</el-button>
       <el-button type="primary" @click="batchDelete(tableChecked)">批量删除</el-button>
@@ -53,10 +53,11 @@ export default {
       tableData: [],
       tableChecked: [],
       type:'',
+      str:'',
       item:'单选'
     }},
    created(){
-      this.get_information(1);//需要触发的函数
+      this.get_information(1,this.str);//需要触发的函数
     },
    methods: {
     handle(row,column,cell,event) {
@@ -156,7 +157,8 @@ export default {
           });
         });
     },
-     get_information(pagenumber) {
+     get_information(pagenumber,str) {
+       // console.log(str)
        this.type=window.localStorage.getItem('type')
        if(this.type==='choice_question')
        {
@@ -170,11 +172,12 @@ export default {
        {
          this.item='阅读理解';
        }
-       this.$axios.get('/api/admin/list_question/', {params: {pagenumber: pagenumber, pagesize: 12,type:this.type}})
+       this.$axios.get('/api/admin/list_question/', {params: {pagenumber: pagenumber, pagesize: 12,type:this.type,title:str}})
          .then(res => {
-           if (res.data.info === 'OK') {
+           // console.log(res)
+           if (res.data.ret === 0) {
              console.log(res);
-             this.tableData = res.data.list.question;
+             this.tableData = res.data.list;
              this.total =res.data.total;
              // console.log(res)
            }
@@ -183,7 +186,7 @@ export default {
      // 分页页码
      changePage(num) {
        if (this.type === 1) {
-         this.get_information(num)
+         this.get_information(num,this.str)
        }
      },
    }
