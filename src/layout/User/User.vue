@@ -78,7 +78,7 @@ export default {
         this.val=val;
         // let  data=this.$qs.stringify({name:val})
         //     this.$axios.post('/api/api_search',data)
-               this.$axios.get('/api/admin/designated_user/',{params:{name:val,pagesize:12,pagenumber:num}})
+               this.$axios.get('/api/admin/designated_user',{params:{name:val,pagesize:12,pagenumber:num}})
         .then(res=> {
           if (res.data.ret === 0) {
             console.log(this.num);
@@ -113,7 +113,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-                this.$axios.delete('/api/admin/list_user/', {params: {userid:rows},
+                this.$axios.delete('/api/admin/list_user', {params: {userid:rows},
           paramsSerializer: params => {
             return this.$qs.stringify(params, { indices: false })
         }})
@@ -150,7 +150,7 @@ export default {
           type: 'warning'
         }).then(() => {
           // let  data=this.$qs.stringify({rows:row.id})
-          this.$axios.delete('/api/admin/list_user/',{params: {userid:row.id}})
+          this.$axios.delete('/api/admin/list_user',{params: {userid:row.id}})
          .then(res=>{
            if(res.data.ret===0)
            {
@@ -177,7 +177,7 @@ export default {
     },
 
     get_information(pagenumber){
-      this.$axios.get('/api/admin/list_user/',{params:{pagenumber:pagenumber,pagesize:12}})
+      this.$axios.get('/api/admin/list_user',{params:{pagenumber:pagenumber,pagesize:12}})
       .then(res => {
         console.log(res)
           if(res.data.ret===0){

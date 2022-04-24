@@ -94,7 +94,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-                this.$axios.delete('/api/admin/list_question/', {params: {question:rows},
+                this.$axios.delete('/api/admin/list_question', {params: {question:rows},
           paramsSerializer: params => {
             return this.$qs.stringify(params, { indices: false })
         }})
@@ -132,7 +132,7 @@ export default {
         }).then(() => {
           // let  data=this.$qs.stringify({rows:row.id})
          console.log(row.id);
-          this.$axios.delete('/api/admin/list_question/',{params: {question:row.id}})
+          this.$axios.delete('/api/admin/list_question',{params: {question:row.id}})
          .then(res=>{
            if(res.data.ret===0)
            {
@@ -172,7 +172,7 @@ export default {
        {
          this.item='阅读理解';
        }
-       this.$axios.get('/api/admin/list_question/', {params: {pagenumber: pagenumber, pagesize: 12,type:this.type,title:str}})
+       this.$axios.get('/api/admin/list_question', {params: {pagenumber: pagenumber, pagesize: 12,type:this.type,title:str}})
          .then(res => {
            // console.log(res)
            if (res.data.ret === 0) {

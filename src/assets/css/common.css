@@ -55,3 +55,7 @@ body{
   height: 30px;
   padding-top:  15px;
 }
+
+.el-form-item__label{
+  font-size: 13px;
+}

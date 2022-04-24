@@ -79,8 +79,19 @@ export default {
     login() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          let data = this.$qs.stringify({name: this.loginForm.name, pwd: this.loginForm.password})
-          this.$axios.post('api/admin/login/', data)
+          // console.log(valid)
+          let datas = {name: this.loginForm.name, pwd: this.loginForm.password}
+//           console.log(typeof(data))
+// var jsons={
+//     arr:["123"],
+//     str:'123'
+// }
+   console.log(typeof(jsons))
+          this.$axios({url:'api/admin/login/', data:datas,
+           method:"post",
+            headers: {
+              'Content-Type': 'application/json'
+            }})
             .then(res => {
               console.log(res);
               if (res.data.ret === 0) {

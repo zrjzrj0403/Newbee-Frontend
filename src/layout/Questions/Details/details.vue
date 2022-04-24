@@ -19,32 +19,33 @@
       <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
         <h1 style="text-align: center">{{ description_title }}</h1>
       </div>
-      <el-input v-show="edit" v-model="description_title" type="textarea" autosize></el-input>
+<!--      @change="onChange(1,$event)-->
+      <el-input  v-show="edit" v-model="description_title" type="textarea" autosize @focus="getfocus">></el-input>
       <br>
       <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">{{ description }}</div>
-      <el-input v-show="edit" v-model="description" type="textarea" autosize></el-input>
+      <el-input v-show="edit" v-model="description" type="textarea" autosize @change="onChange(2,$event)"></el-input>
       <br>
       <div v-for="(item, index) in dynamicForm.counter">
         <div v-show="!edit" v-model="item.description_1" style="white-space: pre-wrap;" class="text textbox sub_title">
           {{ index + 1 }}.{{ item.description_1 }}
         </div>
-        <el-input v-show="edit" v-model="item.description_1" type="textarea" autosize></el-input>
+        <el-input v-show="edit" v-model="item.description_1" type="textarea" autosize @change="onChange(3+(index)*5,$event)"></el-input>
         <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.description_A" class="text textbox">
           A.{{ item.description_A }}
         </div>
-        <el-input v-show="edit" v-model="item.description_A" type="textarea" autosize></el-input>
+        <el-input v-show="edit" v-model="item.description_A" type="textarea" autosize @change="onChange(4+(index)*5,$event)" ></el-input>
         <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.description_B" class="text textbox">
           B.{{ item.description_B }}
         </div>
-        <el-input v-show="edit" v-model="item.description_B" type="textarea" autosize></el-input>
+        <el-input v-show="edit" v-model="item.description_B" type="textarea" autosize @change="onChange(5+(index)*5,$event)"></el-input>
         <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.description_C" class="text textbox">
           C.{{ item.description_C }}
         </div>
-        <el-input v-show="edit" v-model="item.description_C" type="textarea" autosize></el-input>
+        <el-input v-show="edit" v-model="item.description_C" type="textarea" autosize @change="onChange(6+(index)*5,$event)"></el-input>
         <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.description_D" class="text textbox">
           D.{{ item.description_D }}
         </div>
-        <el-input v-show="edit" v-model="item.description_D" type="textarea" autosize></el-input>
+        <el-input v-show="edit" v-model="item.description_D" type="textarea" autosize @change="onChange(7+(index)*5,$event)"></el-input>
         <!--            radioSelect[index]-->
       </div>
       <i
@@ -84,6 +85,7 @@ export default {
       dynamicForm: {
         counter: []
       },
+      thistext:'',
       radioSelect: [{name: 'description_1'}, {name: 'description_2'}, {name: 'description_3'}],
     }
   },
@@ -93,6 +95,10 @@ export default {
     // this.addInput();
   },
   methods: {
+    getfocus(){
+      this.thistext=this.description_title;
+      console.log(this.thistext)
+    },
     get() {
       // console.log('1')
       this.id = this.$route.query.id;
@@ -109,7 +115,7 @@ export default {
       }
     },
     get_details() {
-      this.$axios.get('/api/admin/designated_question/', {params: {id: this.id}})
+      this.$axios.get('/api/admin/designated_question', {params: {id: this.id}})
         .then(res => {
           // console.log(res);
           this.description_title = res.data.title;
@@ -126,6 +132,12 @@ export default {
           this.times = this.times + 1;
         })
     },
+      onChange(a,e){
+        console.log(a)
+        console.log(e)
+        // const { value } = e.target;
+        // console.log(e.target);
+      },
     addInput() {
       var i;
       var j = 0;

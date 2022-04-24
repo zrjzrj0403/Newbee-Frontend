@@ -32,7 +32,7 @@ export default {
       this.$emit('changeCollapse')
     },
      get_name() {
-      this.$axios.post('/api/admin/getname/')
+      this.$axios.post('/api/admin/getname')
         .then(res => {
           if(res.data.ret===0){
             this.name=res.data.name
@@ -40,11 +40,11 @@ export default {
         })
     },
     logout(){
-      this.$axios.delete('/api/admin/logout/')
+      this.$axios.delete('/api/admin/logout')
       .then(res=>{
         if(res.data.ret===0)
         {
-             this.$router.push('/login/');
+             this.$router.push('/login');
         }
         else
         {
