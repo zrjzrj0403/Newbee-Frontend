@@ -120,7 +120,7 @@
           </el-select>
         </div>
         <el-button class='button' type="primary" @click="upStep">上一步</el-button>
-          <el-button class='button' type="success" @click="changeStrp">确定提交</el-button>
+          <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
         <i
           :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
           @click="edit = !edit"
@@ -210,7 +210,6 @@ export default {
         if(this.nextstep===0)
         {
           this.num= this.question.sub_que_num;
-
             for (i = 0; i < sub_que_num; i++) {
           // // console.log(i)
           this.dynamicForm.counter.push({
@@ -264,6 +263,19 @@ export default {
            else if (this.step === 2) {
         this.$router.go(0);
       }
+    },
+    changeStrp2(){
+        console.log(this.subque);
+      console.log(this.question.sub_que_num);
+      console.log(this.question.text);
+      console.log(this.question.type);
+       let datas = {type: this.question.type, text:this.question.text,sub_que_num:this.question.sub_que_num,sub_que:this.subque}
+          this.$axios({url:'/api/admin/designated_question', data:datas,
+           method:"post",
+            headers: {
+              'Content-Type': 'application/json'
+            }})
+        // this.$router.go(0);
     },
     onSubmit() {
       console.log('submit!');

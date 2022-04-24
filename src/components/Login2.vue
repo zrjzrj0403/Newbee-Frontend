@@ -87,7 +87,7 @@ export default {
 //     str:'123'
 // }
 //    console.log(typeof(jsons))
-          this.$axios({url:'api/admin/login/', data:datas,
+          this.$axios({url:'api/admin/login', data:datas,
            method:"post",
             headers: {
               'Content-Type': 'application/json'
