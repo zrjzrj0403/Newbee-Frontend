@@ -39,24 +39,24 @@
       </el-form>
     </div>
     <div v-if="step === 1">
+       <el-form ref="dynamicForm" :model="dynamicForm" label-width="80px" size="mini" prop="dynamicForm">
         <div class="form"  v-for="(item, index) in dynamicForm.counter">
-          <el-form ref="form" :model="question" label-width="80px" size="mini">
-            <el-form-item label="子题目标题">
+            <el-form-item label="子题目标题" :prop="'counter.' + index + '.stem'"  :rules="rules2.stem">
               <el-input v-model="item.stem" type="textarea" rows="2"></el-input>
             </el-form-item>
-            <el-form-item label="子题目选项">
+            <el-form-item label="子题目选项" :prop="'counter.' + index + '.option'"  :rules="rules2.option">
               <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)"></el-input>
             </el-form-item>
-            <el-form-item label="子题目答案">
-              <el-select v-model="item.answer" placeholder="请选择子题目答案">
+            <el-form-item label="子题目答案" :prop="'counter.' + index + '.answer'"  :rules="rules2.answer">
+              <el-select  v-model="item.answer" placeholder="请选择子题目答案">
                 <el-option label="A" value="A"></el-option>
                 <el-option label="B" value="B"></el-option>
                 <el-option label="C" value="C"></el-option>
                 <el-option label="D" value="D"></el-option>
               </el-select>
             </el-form-item>
-          </el-form>
         </div>
+           </el-form>
         <el-button class='button' type="primary" @click="upStep">上一步</el-button>
         <el-button class='button' type="success" @click="changeStrp">下一步</el-button>
     </div>
@@ -158,13 +158,18 @@ export default {
       dynamicForm: {
         counter: [],
       },
+      rules2:{
+        stem:[{required:true, message: '子题目不能为空', tigger: 'blur'}],
+        option:[{required:true, message: '选项不能为空', tigger: 'blur'}],
+        answer:[{required:true, message: '答案不能为空', trigger: ["blur",'change']}],
+      },
       str: [],
       savestr: [],
     }
   },
   created() {
     // this.test();
-      this.question.type=this.option[0].value;
+    //   this.question.type=this.option[0].value;
       this.step=0;
   },
   methods: {
@@ -207,10 +212,11 @@ export default {
           this.num= this.question.sub_que_num;
 
             for (i = 0; i < sub_que_num; i++) {
-          // console.log(i)
+          // // console.log(i)
           this.dynamicForm.counter.push({
             stem: "",
             option: "",
+            answer: "",
           })
          }
         }
@@ -231,7 +237,9 @@ export default {
          })
       }
          else if (this.step === 1) {
-        var i;
+           this.$refs.dynamicForm.validate(valid => {
+           if (valid) {
+                var i;
         console.log(this.dynamicForm.counter)
          this.subque.length=0;
            console.log(this.subque)
@@ -251,7 +259,9 @@ export default {
         // this.subque=this.subque.slice(0,0)
         // console.log(this.subque)
         this.step=2;
-      } else if (this.step === 2) {
+      }
+           } )}
+           else if (this.step === 2) {
         this.$router.go(0);
       }
     },

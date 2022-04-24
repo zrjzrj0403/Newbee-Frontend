@@ -86,7 +86,7 @@ export default {
 //     arr:["123"],
 //     str:'123'
 // }
-   console.log(typeof(jsons))
+//    console.log(typeof(jsons))
           this.$axios({url:'api/admin/login/', data:datas,
            method:"post",
             headers: {
