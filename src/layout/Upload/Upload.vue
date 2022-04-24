@@ -14,8 +14,8 @@
       </el-steps>
     </div>
     <div class="form" v-if="step === 0">
-      <el-form ref="question" :model="question" label-width="80px" size="mini" :rules="rule" prop="question" >
-        <el-form-item label="题目标题" prop="title" >
+      <el-form ref="question" :model="question" label-width="80px" size="mini" :rules="rule" prop="question">
+        <el-form-item label="题目标题" prop="title">
           <el-input v-model="question.title" type="textarea" rows="2"></el-input>
         </el-form-item>
         <el-form-item label="题目类别" prop="type">
@@ -28,7 +28,7 @@
         <el-form-item label="小题数量" prop="sub_que_num">
           <el-input-number v-model="question.sub_que_num" @change="handleChange" :min="1" :max="10"
                            label="描述文字"></el-input-number>
-        </el-form-item >
+        </el-form-item>
         <el-form-item v-if="question.type!== 'choice_question'" label="题目内容" prop="text">
           <el-input v-model="question.text" type="textarea" rows="8"></el-input>
         </el-form-item>
@@ -39,26 +39,27 @@
       </el-form>
     </div>
     <div v-if="step === 1">
-       <el-form ref="dynamicForm" :model="dynamicForm" label-width="80px" size="mini" prop="dynamicForm">
-        <div class="form"  v-for="(item, index) in dynamicForm.counter">
-            <el-form-item label="子题目标题" :prop="'counter.' + index + '.stem'"  :rules="rules2.stem">
-              <el-input v-model="item.stem" type="textarea" rows="2"></el-input>
-            </el-form-item>
-            <el-form-item label="子题目选项" :prop="'counter.' + index + '.option'"  :rules="rules2.option">
-              <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)"></el-input>
-            </el-form-item>
-            <el-form-item label="子题目答案" :prop="'counter.' + index + '.answer'"  :rules="rules2.answer">
-              <el-select  v-model="item.answer" placeholder="请选择子题目答案">
-                <el-option label="A" value="A"></el-option>
-                <el-option label="B" value="B"></el-option>
-                <el-option label="C" value="C"></el-option>
-                <el-option label="D" value="D"></el-option>
-              </el-select>
-            </el-form-item>
+      <el-form ref="dynamicForm" :model="dynamicForm" label-width="80px" size="mini" prop="dynamicForm">
+        <div class="form" v-for="(item, index) in dynamicForm.counter">
+          <el-form-item label="子题目标题" v-if="question.type!== 'cloze_question'" :prop="'counter.' + index + '.stem'"
+                        :rules="rules2.stem">
+            <el-input v-model="item.stem" type="textarea" rows="2"></el-input>
+          </el-form-item>
+          <el-form-item label="子题目选项" :prop="'counter.' + index + '.option'" :rules="rules2.option">
+            <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)"></el-input>
+          </el-form-item>
+          <el-form-item label="子题目答案" :prop="'counter.' + index + '.answer'" :rules="rules2.answer">
+            <el-select v-model="item.answer" placeholder="请选择子题目答案">
+              <el-option label="A" value="A"></el-option>
+              <el-option label="B" value="B"></el-option>
+              <el-option label="C" value="C"></el-option>
+              <el-option label="D" value="D"></el-option>
+            </el-select>
+          </el-form-item>
         </div>
-           </el-form>
-        <el-button class='button' type="primary" @click="upStep">上一步</el-button>
-        <el-button class='button' type="success" @click="changeStrp">下一步</el-button>
+      </el-form>
+      <el-button class='button' type="primary" @click="upStep">上一步</el-button>
+      <el-button class='button' type="success" @click="changeStrp">下一步</el-button>
     </div>
     <div>
       <div v-if="step === 2">
@@ -120,7 +121,8 @@
           </el-select>
         </div>
         <el-button class='button' type="primary" @click="upStep">上一步</el-button>
-          <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
+        <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
+        <el-button class='button' type="primary" @click="edit = !edit">编辑</el-button>
         <i
           :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
           @click="edit = !edit"
@@ -136,9 +138,9 @@ export default {
     return {
       subque: [],
       edit: false,
-       option:[
-            {value:"reading_question"},
-    ],
+      option: [
+        {value: "reading_question"},
+      ],
       question: {
         title: '',
         type: '',
@@ -146,22 +148,22 @@ export default {
         text: '',
         answer: ''
       },
-       rule:{
-          title:[{required:true, message: '题目不能为空', tigger: 'change'}],
-          type:[{required:true, message: '类型不能为空', trigger: ["blur",'change']}],
-         text:[{required:true, message: '题目不能为空', tigger: 'blur'}],
-         sub_que_num:[{required:true}],
+      rule: {
+        title: [{required: true, message: '题目不能为空', tigger: 'change'}],
+        type: [{required: true, message: '类型不能为空', trigger: ["blur", 'change']}],
+        text: [{required: true, message: '题目不能为空', tigger: 'blur'}],
+        sub_que_num: [{required: true}],
       },
-      num:'',
+      num: '',
       step: 0,
-      nextstep:0,
+      nextstep: 0,
       dynamicForm: {
         counter: [],
       },
-      rules2:{
-        stem:[{required:true, message: '子题目不能为空', tigger: 'blur'}],
-        option:[{required:true, message: '选项不能为空', tigger: 'blur'}],
-        answer:[{required:true, message: '答案不能为空', trigger: ["blur",'change']}],
+      rules2: {
+        stem: [{required: true, message: '子题目不能为空', tigger: 'blur'}],
+        option: [{required: true, message: '选项不能为空', tigger: 'blur'}],
+        answer: [{required: true, message: '答案不能为空', trigger: ["blur", 'change']}],
       },
       str: [],
       savestr: [],
@@ -170,7 +172,7 @@ export default {
   created() {
     // this.test();
     //   this.question.type=this.option[0].value;
-      this.step=0;
+    this.step = 0;
   },
   methods: {
     changeit(e, a) {
@@ -188,9 +190,8 @@ export default {
     },
     upStep() {
       if (this.step >= 0) {
-        if(this.nextstep<this.step)
-        {
-           this.nextstep=this.step;
+        if (this.nextstep < this.step) {
+          this.nextstep = this.step;
         }
         this.step = this.step - 1;
       } else {
@@ -199,83 +200,89 @@ export default {
     },
     changeStrp() {
       if (this.step === 0) {
-         this.$refs.question.validate(valid => {
-           if (valid) {
+        this.$refs.question.validate(valid => {
+          if (valid) {
             var sub_que_num, title, text, type;
-        title = this.question.title
-        sub_que_num = this.question.sub_que_num;
-        type = this.question.type;
-        text = this.question.text;
-        var i;
-        if(this.nextstep===0)
-        {
-          this.num= this.question.sub_que_num;
-            for (i = 0; i < sub_que_num; i++) {
-          // // console.log(i)
-          this.dynamicForm.counter.push({
-            stem: "",
-            option: "",
-            answer: "",
-          })
-         }
-        }
-         if(this.num!==sub_que_num)
-         {
-           this.num=sub_que_num;
-            this.dynamicForm.counter=[];
-            for (i = 0; i < sub_que_num; i++) {
-          // console.log(i)
-          this.dynamicForm.counter.push({
-            stem: "",
-            option: "",
-          })
-         }
-        }
-        this.step = 1;
-           }
-         })
-      }
-         else if (this.step === 1) {
-           this.$refs.dynamicForm.validate(valid => {
-           if (valid) {
-                var i;
-        console.log(this.dynamicForm.counter)
-         this.subque.length=0;
-           console.log(this.subque)
-        for (i = 0; i < this.question.sub_que_num; i++) {
-          this.subque.push(
+            title = this.question.title
+            sub_que_num = this.question.sub_que_num;
+            type = this.question.type;
+            text = this.question.text;
+            var i;
+            if (this.nextstep === 0) {
+              this.num = this.question.sub_que_num;
+              for (i = 0; i < sub_que_num; i++) {
+                // // console.log(i)
+                this.dynamicForm.counter.push({
+                  stem: "",
+                  option: "",
+                  answer: "",
+                })
+              }
+            }
+            if (this.num !== sub_que_num) {
+              this.num = sub_que_num;
+              this.dynamicForm.counter = [];
+              for (i = 0; i < sub_que_num; i++) {
+                // console.log(i)
+                this.dynamicForm.counter.push({
+                  stem: "",
+                  option: "",
+                })
+              }
+            }
+            this.step = 1;
+          }
+        })
+      } else if (this.step === 1) {
+        this.$refs.dynamicForm.validate(valid => {
+          if (valid) {
+            var i;
+            console.log(this.dynamicForm.counter)
+            this.subque.length = 0;
+            console.log(this.subque)
+            for (i = 0; i < this.question.sub_que_num; i++) {
+              this.subque.push(
                 {
                   stem: this.dynamicForm.counter[i].stem,
                   options: this.savestr[i].slice(1, 5),
                   answer: this.dynamicForm.counter[i].answer,
+                  number: i + 1,
                 }
               )
-          // this.subque[i].stem=this.dynamicForm.counter[i].stem;
-          // this.subque[i].options=this.savestr[i].slice(1,5);
-          // this.subque[i].answer=this.dynamicForm.counter[i].answer;
-        }
-         console.log(this.subque)
-        // this.subque=this.subque.slice(0,0)
-        // console.log(this.subque)
-        this.step=2;
-      }
-           } )}
-           else if (this.step === 2) {
+              // this.subque[i].stem=this.dynamicForm.counter[i].stem;
+              // this.subque[i].options=this.savestr[i].slice(1,5);
+              // this.subque[i].answer=this.dynamicForm.counter[i].answer;
+            }
+            console.log(this.subque)
+            // this.subque=this.subque.slice(0,0)
+            // console.log(this.subque)
+            this.step = 2;
+          }
+        })
+      } else if (this.step === 2) {
         this.$router.go(0);
       }
     },
-    changeStrp2(){
-        console.log(this.subque);
+    changeStrp2() {
+      console.log(this.subque);
       console.log(this.question.sub_que_num);
       console.log(this.question.text);
       console.log(this.question.type);
-       let datas = {type: this.question.type, text:this.question.text,sub_que_num:this.question.sub_que_num,sub_que:this.subque}
-          this.$axios({url:'/api/admin/designated_question', data:datas,
-           method:"post",
-            headers: {
-              'Content-Type': 'application/json'
-            }})
-        // this.$router.go(0);
+      let datas = {
+        type: this.question.type,
+        text: this.question.text,
+        title: this.question.title,
+        sub_que_num: this.question.sub_que_num,
+        sub_que: this.subque
+      }
+      this.$axios({
+        url: '/api/admin/designated_question', data: datas,
+        method: "post",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      this.$router.go(0);
     },
     onSubmit() {
       console.log('submit!');

@@ -20,11 +20,12 @@
         <h1 style="text-align: center">{{ description_title }}</h1>
       </div>
 <!--      @change="onChange(1,$event)-->
-      <el-input  v-show="edit" v-model="description_title" type="textarea" autosize @focus="getfocus">></el-input>
+      <el-input  v-show="edit" v-model="description_title"  type="textarea" autosize @focus="getfocus">></el-input>
       <br>
       <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">{{ description }}</div>
-      <el-input v-show="edit" v-model="description" type="textarea" autosize @change="onChange(2,$event)"></el-input>
+      <el-input v-show="edit" v-model="description" type="textarea"  autosize @change="onChange(2,$event)"></el-input>
       <br>
+<!--      v-if="this.type=='choice_question'"-->
       <div v-for="(item, index) in dynamicForm.counter">
         <div v-show="!edit" v-model="item.description_1" style="white-space: pre-wrap;" class="text textbox sub_title">
           {{ index + 1 }}.{{ item.description_1 }}
@@ -79,6 +80,7 @@ export default {
       item: '',
       textarea: 666,
       times: 0,
+      type:'',
       id: 0,
       sub_que_num: 0,
       sub_que_t: [],
