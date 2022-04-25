@@ -12,7 +12,7 @@ import Home3 from "../layout/Home/index";
 const Announcement =()=>import('../layout/Announcement/Announcement')
 const Question =()=>import('../layout/Questions/Questions')
 const User =()=>import('../layout/User/User')
-const Details =()=>import('../layout/Questions/Details/details')
+const Details =()=>import('../layout/Questions/Details/details2')
 const ReadingComprehension =()=>import('../layout/Questions/ReadingComprehension/ReadingComprehension')
 const MultipleChoice =()=>import('../layout/Questions/MultipleChoice/MultipleChoice')
 const Cloze =()=>import('../layout/Questions/Cloze/cloze')

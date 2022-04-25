@@ -63,70 +63,98 @@
     </div>
     <div>
       <div v-if="step === 2">
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
-          <h1 style="text-align: center">{{ question.title }}</h1>
-        </div>
-        <el-input v-show="edit" v-model="question.title" type="textarea" autosize>></el-input>
-        <br>
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-             v-if="question.type==='reading_question'">该题目的类型为：阅读
-        </div>
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-             v-if="question.type==='cloze_question'">该题目的类型为：完型
-        </div>
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-             v-if="question.type==='choice_question'">该题目的类型为：选择
-        </div>
-        <el-select v-show="edit" v-model="question.type" placeholder="请选择子题目答案">
-          <el-option label="选择" value="choice_question"></el-option>
-          <el-option label="完型" value="cloze_question"></el-option>
-          <el-option label="阅读" value="reading_question"></el-option>
-        </el-select>
-        <br>
-        <el-input v-show="edit" v-model="question.text" type="textarea" autosize></el-input>
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">{{ question.text }}</div>
-        <br>
-        <div v-for="(item, index) in subque">
-          <div v-show="!edit" v-model="item.stem" style="white-space: pre-wrap;" class="text textbox sub_title">
-            {{ index + 1 }}.{{ item.stem }}
+        <el-form :model="question" ref="question" label-width="120px" class="demo-dynamic" :rules="rule3">
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+            <h1 style="text-align: center">{{ question.title }}</h1>
           </div>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox">
-            A.{{ item.options[0] }}
+          <el-form-item v-show="edit" prop="title" label="题目标题">
+            <el-input v-show="edit" v-model="question.title" type="textarea" autosize>></el-input>
+          </el-form-item>
+          <br>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+               v-if="question.type==='reading_question'">该题目的类型为：阅读
           </div>
-          <el-input v-show="edit" v-model="item.options[0]" type="textarea" autosize
-                    @change="onChange(4+(index)*5,$event)"></el-input>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox">
-            B.{{ item.options[1] }}
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+               v-if="question.type==='cloze_question'">该题目的类型为：完型
           </div>
-          <el-input v-show="edit" v-model="item.options[1]" type="textarea" autosize
-                    @change="onChange(5+(index)*5,$event)"></el-input>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox">
-            C.{{ item.options[2] }}
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+               v-if="question.type==='choice_question'">该题目的类型为：选择
           </div>
-          <el-input v-show="edit" v-model="item.options[2]" type="textarea" autosize
-                    @change="onChange(6+(index)*5,$event)"></el-input>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox">
-            D.{{ item.options[3] }}
+          <el-form-item v-show="edit" prop="type" label="题目类型">
+            <el-select v-show="edit" v-model="question.type" placeholder="请选择子题目答案">
+              <el-option label="选择" value="choice_question"></el-option>
+              <el-option label="完型" value="cloze_question"></el-option>
+              <el-option label="阅读" value="reading_question"></el-option>
+            </el-select>
+          </el-form-item>
+          <br>
+          <el-form-item v-show="edit" prop="text" label="题目内容">
+            <el-input v-show="edit" v-model="question.text" type="textarea" autosize></el-input>
+          </el-form-item>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">{{ question.text }}</div>
+          <br>
+          <div v-for="(item, index) in this.question.subque">
+            <div v-show="!edit" v-model="item.stem" style="white-space: pre-wrap;" class="text textbox sub_title">
+              {{ index + 1 }}.{{ item.stem }}
+            </div>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题标题'" :prop="'subque.' + index + '.stem'"
+                          :rules="rule3.stem">
+              <el-input v-show="edit" v-model="item.stem" type="textarea" autosize
+                        @change="onChange(3+(index)*5,$event)"></el-input>
+            </el-form-item>
+            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox">
+              A.{{ item.options[0] }}
+            </div>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题A选项'" :prop="'subque.' + index + '.optionA'"
+                          :rules="rule3.optionA">
+              <el-input v-show="edit" v-model="item.options[0]" type="textarea" autosize
+                        @change="onChange(4+(index)*5,$event)"></el-input>
+            </el-form-item>
+            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox">
+              B.{{ item.options[1] }}
+            </div>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题B选项'" :prop="'subque.' + index + '.optionB'"
+                          :rules="rule3.optionB">
+              <el-input v-show="edit" v-model="item.options[1]" type="textarea" autosize
+                        @change="onChange(5+(index)*5,$event)"></el-input>
+            </el-form-item>
+            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox">
+              C.{{ item.options[2] }}
+            </div>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题C选项'" :prop="'subque.' + index + '.optionC'"
+                          :rules="rule3.optionC">
+              <el-input v-show="edit" v-model="item.options[2]" type="textarea" autosize
+                        @change="onChange(6+(index)*5,$event)"></el-input>
+            </el-form-item>
+            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox">
+              D.{{ item.options[3] }}
+            </div>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题D选项'" :prop="'subque.' + index + '.optionD'"
+                          :rules="rule3.optionD">
+              <el-input v-show="edit" v-model="item.options[3]" type="textarea" autosize
+                        @change="onChange(7+(index)*5,$event)"></el-input>
+            </el-form-item>
+            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text textbox">
+              答案为：{{ item.answer }}
+            </div>
+                <el-form-item v-show="edit" :label="'第'+(index+1)+'小题答案'" :prop="'subque.' + index + '.answer'"
+                               :rules="rule3.answer">
+            <el-select v-show="edit" v-model="item.answer" placeholder="请选择子题目答案">
+              <el-option label="A" value="A"></el-option>
+              <el-option label="B" value="B"></el-option>
+              <el-option label="C" value="C"></el-option>
+              <el-option label="D" value="D"></el-option>
+            </el-select>
+               </el-form-item>
           </div>
-          <el-input v-show="edit" v-model="item.options[3]" type="textarea" autosize
-                    @change="onChange(7+(index)*5,$event)"></el-input>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text textbox">
-            答案为：{{ item.answer }}
-          </div>
-          <el-select v-show="edit" v-model="item.answer" placeholder="请选择子题目答案">
-            <el-option label="A" value="A"></el-option>
-            <el-option label="B" value="B"></el-option>
-            <el-option label="C" value="C"></el-option>
-            <el-option label="D" value="D"></el-option>
-          </el-select>
-        </div>
-        <el-button class='button' type="primary" @click="upStep">上一步</el-button>
-        <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
-        <el-button class='button' type="primary" @click="edit = !edit">编辑</el-button>
-        <i
-          :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
-          @click="edit = !edit"
-        ></i>
+          <el-button class='button' type="primary" @click="upStep">上一步</el-button>
+          <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
+          <el-button class='button' type="primary" @click="edit = !edit">编辑</el-button>
+          <i
+            :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
+            @click="edit = !edit"
+          ></i>
+        </el-form>
       </div>
     </div>
   </div>
@@ -136,7 +164,6 @@
 export default {
   data() {
     return {
-      subque: [],
       edit: false,
       option: [
         {value: "reading_question"},
@@ -144,9 +171,21 @@ export default {
       question: {
         title: '',
         type: '',
+        subque: [],
         sub_que_num: '',
         text: '',
         answer: ''
+      },
+      rule3: {
+        title: [{required: true, message: '标题不能为空', tigger: 'blur'}],
+        type: [{required: true, message: '类型不能为空', trigger: ["blur", 'change']}],
+        text: [{required: true, message: '标题不能为空', tigger: 'blur'}],
+        stem: [{required: true, message: '子题目不能为空', tigger: 'blur'}],
+        optionA: [{required: true, message: 'A选择不能为空', tigger: 'blur'}],
+        optionB: [{required: true, message: 'B选项不能为空', tigger: 'blur'}],
+        optionC: [{required: true, message: 'C选择不能为空', tigger: 'blur'}],
+        optionD: [{required: true, message: 'D选项不能为空', tigger: 'blur'}],
+        answer: [{required: true, message: '答案不能为空', trigger: ["blur", 'change']}],
       },
       rule: {
         title: [{required: true, message: '题目不能为空', tigger: 'change'}],
@@ -238,10 +277,10 @@ export default {
           if (valid) {
             var i;
             console.log(this.dynamicForm.counter)
-            this.subque.length = 0;
-            console.log(this.subque)
+            this.question.subque.length = 0;
+            console.log(this.question.subque)
             for (i = 0; i < this.question.sub_que_num; i++) {
-              this.subque.push(
+              this.question.subque.push(
                 {
                   stem: this.dynamicForm.counter[i].stem,
                   options: this.savestr[i].slice(1, 5),
@@ -249,13 +288,7 @@ export default {
                   number: i + 1,
                 }
               )
-              // this.subque[i].stem=this.dynamicForm.counter[i].stem;
-              // this.subque[i].options=this.savestr[i].slice(1,5);
-              // this.subque[i].answer=this.dynamicForm.counter[i].answer;
             }
-            console.log(this.subque)
-            // this.subque=this.subque.slice(0,0)
-            // console.log(this.subque)
             this.step = 2;
           }
         })
@@ -264,16 +297,12 @@ export default {
       }
     },
     changeStrp2() {
-      console.log(this.subque);
-      console.log(this.question.sub_que_num);
-      console.log(this.question.text);
-      console.log(this.question.type);
       let datas = {
         type: this.question.type,
         text: this.question.text,
         title: this.question.title,
         sub_que_num: this.question.sub_que_num,
-        sub_que: this.subque
+        sub_que: this.question.subque
       }
       this.$axios({
         url: '/api/admin/designated_question', data: datas,

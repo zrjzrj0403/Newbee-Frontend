@@ -10,11 +10,14 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@wangeditor/editor": "^5.0.1",
+    "@wangeditor/editor-for-vue": "^1.0.0",
     "default-passive-events": "^2.0.0",
     "element-ui": "^2.15.6",
     "qs": "^6.10.3",
     "vue-axios": "^3.4.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
