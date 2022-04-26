@@ -9,6 +9,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/common.css'
 import 'default-passive-events'
+import ECharts from 'vue-echarts';
+import 'echarts';
 // axios.defaults.withCredentials=true;
 
 Vue.config.productionTip = false
@@ -16,6 +18,7 @@ axios.defaults.withCredentials = true;
 Vue.prototype.$axios=axios
 Vue.prototype.$qs=qs
 Vue.use(ElementUI);
+Vue.component('e-charts', ECharts)
 
 
 /* eslint-disable no-new */

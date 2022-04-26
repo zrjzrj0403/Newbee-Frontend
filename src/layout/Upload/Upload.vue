@@ -29,7 +29,7 @@
           <el-input-number v-model="question.sub_que_num" @change="handleChange" :min="1" :max="10"
                            label="描述文字"></el-input-number>
         </el-form-item>
-        <el-form-item v-if="question.type!== 'choice_question'" label="题目内容" prop="text">
+        <el-form-item v-if="question.type!== 'choice_question'" label="题目正文" prop="text">
           <el-input v-model="question.text" type="textarea" rows="8"></el-input>
         </el-form-item>
         <!--        <el-form-item size="large">-->
@@ -63,23 +63,63 @@
     </div>
     <div>
       <div v-if="step === 2">
-        <el-form :model="question" ref="question" label-width="120px" class="demo-dynamic" :rules="rule3">
+        <div class="display">
           <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
             <h1 style="text-align: center">{{ question.title }}</h1>
           </div>
+          <div v-show="!edit" class="information">
+            <el-collapse v-model="activeNames">
+              <el-collapse-item name="1" v-show="question.type!=='choice_question'">
+                <span class="collapse-title" slot="title">题目正文</span>
+                <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+                  <p>{{ question.text }}</p>
+                </div>
+              </el-collapse-item>
+              <el-collapse-item name="2">
+                <span class="collapse-title" slot="title">题目类型</span>
+                <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+                     v-if="question.type==='reading_question'">该题目的类型为：阅读
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+                     v-if="question.type==='cloze_question'">该题目的类型为：完型
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
+                     v-if="question.type==='choice_question'">该题目的类型为：选择
+                </div>
+              </el-collapse-item>
+              <div v-for="(item, index) in this.question.subque">
+                <el-collapse-item :name="''+(index+3)">
+                  <span class="collapse-title" slot="title">第{{ index + 1 }}小题信息</span>
+                  <div v-show="!edit&&question.type!=='cloze_question'" v-model="item.stem"
+                       style="white-space: pre-wrap;"
+                       class="text textbox sub_title">
+                    {{ index + 1 }}.{{ item.stem }}
+                  </div>
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox">
+                    A.{{ item.options[0] }}
+                  </div>
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox">
+                    B.{{ item.options[1] }}
+                  </div>
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox">
+                    C.{{ item.options[2] }}
+                  </div>
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox">
+                    D.{{ item.options[3] }}
+                  </div>
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text">
+                    答案为：{{ item.answer }}
+                  </div>
+                </el-collapse-item>
+              </div>
+            </el-collapse>
+          </div>
+
+        </div>
+        <el-form :model="question" ref="question" label-width="120px" class="demo-dynamic" :rules="rule3">
           <el-form-item v-show="edit" prop="title" label="题目标题">
             <el-input v-show="edit" v-model="question.title" type="textarea" autosize>></el-input>
           </el-form-item>
-          <br>
-          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-               v-if="question.type==='reading_question'">该题目的类型为：阅读
-          </div>
-          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-               v-if="question.type==='cloze_question'">该题目的类型为：完型
-          </div>
-          <div v-show="!edit" style="white-space: pre-wrap;" class="text2 textbox"
-               v-if="question.type==='choice_question'">该题目的类型为：选择
-          </div>
           <el-form-item v-show="edit" prop="type" label="题目类型">
             <el-select v-show="edit" v-model="question.type" placeholder="请选择子题目答案">
               <el-option label="选择" value="choice_question"></el-option>
@@ -87,73 +127,52 @@
               <el-option label="阅读" value="reading_question"></el-option>
             </el-select>
           </el-form-item>
-          <br>
-          <el-form-item v-show="edit" prop="text" label="题目内容">
+          <el-form-item v-show="edit&&question.type!=='choice_question'" prop="text" label="题目正文">
             <el-input v-show="edit" v-model="question.text" type="textarea" autosize></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">{{ question.text }}</div>
-          <br>
           <div v-for="(item, index) in this.question.subque">
-            <div v-show="!edit" v-model="item.stem" style="white-space: pre-wrap;" class="text textbox sub_title">
-              {{ index + 1 }}.{{ item.stem }}
-            </div>
-            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题标题'" :prop="'subque.' + index + '.stem'"
+            <el-form-item v-show="edit&&question.type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'" :prop="'subque.' + index + '.stem'"
                           :rules="rule3.stem">
               <el-input v-show="edit" v-model="item.stem" type="textarea" autosize
                         @change="onChange(3+(index)*5,$event)"></el-input>
             </el-form-item>
-            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox">
-              A.{{ item.options[0] }}
-            </div>
             <el-form-item v-show="edit" :label="'第'+(index+1)+'小题A选项'" :prop="'subque.' + index + '.optionA'"
                           :rules="rule3.optionA">
               <el-input v-show="edit" v-model="item.options[0]" type="textarea" autosize
                         @change="onChange(4+(index)*5,$event)"></el-input>
             </el-form-item>
-            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox">
-              B.{{ item.options[1] }}
-            </div>
             <el-form-item v-show="edit" :label="'第'+(index+1)+'小题B选项'" :prop="'subque.' + index + '.optionB'"
                           :rules="rule3.optionB">
               <el-input v-show="edit" v-model="item.options[1]" type="textarea" autosize
                         @change="onChange(5+(index)*5,$event)"></el-input>
             </el-form-item>
-            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox">
-              C.{{ item.options[2] }}
-            </div>
             <el-form-item v-show="edit" :label="'第'+(index+1)+'小题C选项'" :prop="'subque.' + index + '.optionC'"
                           :rules="rule3.optionC">
               <el-input v-show="edit" v-model="item.options[2]" type="textarea" autosize
                         @change="onChange(6+(index)*5,$event)"></el-input>
             </el-form-item>
-            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox">
-              D.{{ item.options[3] }}
-            </div>
             <el-form-item v-show="edit" :label="'第'+(index+1)+'小题D选项'" :prop="'subque.' + index + '.optionD'"
                           :rules="rule3.optionD">
               <el-input v-show="edit" v-model="item.options[3]" type="textarea" autosize
                         @change="onChange(7+(index)*5,$event)"></el-input>
             </el-form-item>
-            <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text textbox">
-              答案为：{{ item.answer }}
-            </div>
-                <el-form-item v-show="edit" :label="'第'+(index+1)+'小题答案'" :prop="'subque.' + index + '.answer'"
-                               :rules="rule3.answer">
-            <el-select v-show="edit" v-model="item.answer" placeholder="请选择子题目答案">
-              <el-option label="A" value="A"></el-option>
-              <el-option label="B" value="B"></el-option>
-              <el-option label="C" value="C"></el-option>
-              <el-option label="D" value="D"></el-option>
-            </el-select>
-               </el-form-item>
+            <el-form-item v-show="edit" :label="'第'+(index+1)+'小题答案'" :prop="'subque.' + index + '.answer'"
+                          :rules="rule3.answer">
+              <el-select v-show="edit" v-model="item.answer" placeholder="请选择子题目答案">
+                <el-option label="A" value="A"></el-option>
+                <el-option label="B" value="B"></el-option>
+                <el-option label="C" value="C"></el-option>
+                <el-option label="D" value="D"></el-option>
+              </el-select>
+            </el-form-item>
           </div>
           <el-button class='button' type="primary" @click="upStep">上一步</el-button>
           <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
           <el-button class='button' type="primary" @click="edit = !edit">编辑</el-button>
-          <i
-            :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
-            @click="edit = !edit"
-          ></i>
+<!--          <i-->
+<!--            :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
+<!--            @click="edit = !edit"-->
+<!--          ></i>-->
         </el-form>
       </div>
     </div>
@@ -165,6 +184,7 @@ export default {
   data() {
     return {
       edit: false,
+      activeNames: ['1', '2', '3', '4', '5'],
       option: [
         {value: "reading_question"},
       ],
@@ -219,7 +239,7 @@ export default {
       //   "B.Rideouts research interest lies in electric engineering\n" +
       //   "C.the efforts to protect condors have brought good results\n" +
       //   "D.researchers have found the final answers to the problem";
-      this.str = e.split(/A\.\s*((?:[a-zA-Z0-9-_'’.?!]+\x20?)+)\s*\r*\n*B\.\s*((?:[a-zA-Z0-9-_'’.?!]+\x20?)+)\w*\s*\r*\n*C\.\s*((?:[a-zA-Z0-9-_'’.!?]+\x20?)+)\w*\s*\r*\n*D\.\s*((?:[a-zA-Z0-9-_'’.!?]+\x20?)+)\s*\r*\n*/);//使用，作为分隔符，输出：["Hello","can I help you?"]
+      this.str = e.split(/A\.\s*((?:[a-zA-Z0-9-_'’.?!,]+\x20?)+)\s*\r*\n*B\.\s*((?:[a-zA-Z0-9-_'’.?!,]+\x20?)+)\w*\s*\r*\n*C\.\s*((?:[a-zA-Z0-9-_'’.!?,]+\x20?)+)\w*\s*\r*\n*D\.\s*((?:[a-zA-Z0-9-_'’.!?,]+\x20?)+)\s*\r*\n*/);//使用，作为分隔符，输出：["Hello","can I help you?"]
       this.savestr[a] = this.str;
       // console.log(this.savestr)
       // console.log(e)
@@ -350,6 +370,15 @@ export default {
 
 .textbox {
   margin: 0 50px;
+}
+
+.collapse-title {
+  flex: 1 0 90%;
+  order: 1;
+}
+
+.information {
+  margin: 1% 2%;
 }
 
 .text2 {

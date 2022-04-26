@@ -12,7 +12,6 @@
     <div class="userheader">
       <el-input  @keyup.enter.native="get_information(1,input)" v-model="input" placeholder="请输入内容"></el-input>
       <el-button type="primary">查询</el-button>
-      <el-button type="primary">添加</el-button>
       <el-button type="primary" @click="batchDelete(tableChecked)">批量删除</el-button>
     </div>
     <!--  2.表格区域 展示视图数据-->
@@ -24,8 +23,6 @@
         <el-table-column prop="sub_que_num" label="所含小题数量" width="180"></el-table-column>
         <el-table-column prop="operate" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-            >编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>
           </template>

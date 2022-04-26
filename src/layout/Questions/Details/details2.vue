@@ -19,69 +19,82 @@
       <el-button class="confirm" type="primary" @click="confirmit">确认提交</el-button>
     </div>
     <div>
-      <el-form :model="dynamicForm" ref="dynamicForm" label-width="120px" class="form" :rules="rule">
-
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+      <div class="display" v-show="!edit">
+        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox title">
           <h1 style="text-align: center">{{ dynamicForm.title }}</h1>
         </div>
-        <!--      @change="onChange(1,$event)-->
+        <div class="information">
+          <el-collapse v-model="activeNames">
+            <el-collapse-item name="1" v-show="type!=='choice_question'">
+              <span class="collapse-title" slot="title">题目正文</span>
+              <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+                <p>{{ dynamicForm.text }}</p>
+              </div>
+            </el-collapse-item>
+            <div v-for="(item, index) in dynamicForm.counter">
+              <el-collapse-item  :name="''+(index+2)">
+                <span class="collapse-title" slot="title">第{{index+1}}小题信息</span>
+                  <div>
+                    <el-button type="primary" round>主要按钮</el-button>
+                  </div>
+                <div v-show="!edit&&type!=='cloze_question'" v-model="item.stem" style="white-space: pre-wrap;"
+                     class="text textbox sub_title">
+                  {{ index + 1 }}.{{ item.stem }}
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionA" class="text textbox">
+                  A.{{ item.optionA }}
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionB" class="text textbox">
+                  B.{{ item.optionB }}
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionC" class="text textbox">
+                  C.{{ item.optionC }}
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionD" class="text textbox">
+                  D.{{ item.optionD }}
+                </div>
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text">
+                  答案为：{{ item.answer }}
+                </div>
+              </el-collapse-item>
+            </div>
+          </el-collapse>
+        </div>
+      </div>
+      <el-form :model="dynamicForm" ref="dynamicForm" label-width="120px" class="form" :rules="rule">
         <el-form-item v-show="edit" prop="title" label="题目标题">
           <el-input v-show="edit" v-model="dynamicForm.title" type="textarea" autosize @focus="getfocus">></el-input>
         </el-form-item>
-        <!--      <br>-->
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
-          <p>{{ dynamicForm.text }}</p>
-        </div>
-        <el-form-item v-show="edit" prop="text" label="题目正文">
+        <el-form-item v-show="edit&&type!=='choice_question'" prop="text" label="题目正文">
           <el-input v-show="edit" v-model="dynamicForm.text" type="textarea" autosize
                     @change="onChange(2,$event)"></el-input>
-          <!--          <Wangeditor/>-->
         </el-form-item>
         <div v-for="(item, index) in dynamicForm.counter">
-          <div v-show="!edit" v-model="item.stem" style="white-space: pre-wrap;"
-               class="text textbox sub_title">
-            {{ index + 1 }}.{{ item.stem }}
-          </div>
-          <el-form-item v-show="edit" :label="'第'+(index+1)+'小题标题'" :prop="'counter.' + index + '.stem'"
+          <el-form-item v-show="edit&&type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'" :prop="'counter.' + index + '.stem'"
                         :rules="rule.stem">
             <el-input v-show="edit" v-model="item.stem" type="textarea" autosize
                       @change="onChange(3+(index)*5,$event)"></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionA" class="text textbox">
-            A.{{ item.optionA }}
-          </div>
           <el-form-item v-show="edit" :label="'第'+(index+1)+'小题A选项'" :prop="'counter.' + index + '.optionA'"
                         :rules="rule.optionA">
             <el-input v-show="edit" v-model="item.optionA" type="textarea" autosize
                       @change="onChange(4+(index)*5,$event)"></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionB" class="text textbox">
-            B.{{ item.optionB }}
-          </div>
           <el-form-item v-show="edit" :label="'第'+(index+1)+'小题B选项'" :prop="'counter.' + index + '.optionB'"
                         :rules="rule.optionB">
             <el-input v-show="edit" v-model="item.optionB" type="textarea" autosize
                       @change="onChange(5+(index)*5,$event)"></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionC" class="text textbox">
-            C.{{ item.optionC }}
-          </div>
           <el-form-item v-show="edit" :label="'第'+(index+1)+'小题C选项'" :prop="'counter.' + index + '.optionC'"
                         :rules="rule.optionC">
             <el-input v-show="edit" v-model="item.optionC" type="textarea" autosize
                       @change="onChange(6+(index)*5,$event)"></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionD" class="text textbox">
-            D.{{ item.optionD }}
-          </div>
           <el-form-item v-show="edit" :label="'第'+(index+1)+'小题D选项'" :prop="'counter.' + index + '.optionD'"
                         :rules="rule.optionD">
             <el-input v-show="edit" v-model="item.optionD" type="textarea" autosize
                       @change="onChange(7+(index)*5,$event)"></el-input>
           </el-form-item>
-          <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text">
-            答案为：{{ item.answer }}
-          </div>
           <el-form-item v-show="edit" :label="'第'+(index+1)+'小题答案'" :prop="'counter.' + index + '.answer'"
                         :rules="rule.answer">
             <el-select v-model="item.answer" placeholder="请选择子题目答案">
@@ -91,19 +104,13 @@
               <el-option label="D" value="D"></el-option>
             </el-select>
           </el-form-item>
-          <!--            radioSelect[index]-->
         </div>
-        <i
-          :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"
-          @click="edit = !edit"
-        ></i>
+<!--        <i-->
+<!--          :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
+<!--          @click="edit = !edit"-->
+<!--        ></i>-->
       </el-form>
-    </div>
-    <div>
-
-    </div>
-    <div>
-
+      <br><br>
     </div>
   </div>
 </template>
@@ -117,14 +124,9 @@ export default {
   },
   data() {
     return {
+      change: false,
       edit: false,
-      description_title: "我是题目",
-      description: "我是文章",
-      description_1: '',
-      description_A: '',
-      description_B: '',
-      description_C: '',
-      description_D: '',
+      activeNames: ['1', '2', '3', '4', '5'],
       item2: '11',
       paths: '',
       judge: 0,
@@ -160,6 +162,9 @@ export default {
     // this.addInput();
   },
   methods: {
+    this1() {
+      console.log('yes')
+    },
     changeit() {
       this.edit = !this.edit;
       this.judge = 1;
@@ -174,11 +179,11 @@ export default {
         var i;
         for (i = 0; i < this.dynamicForm.counter.length; i++) {
           this.dynamicForm.sub_que.push({
-            answer : this.dynamicForm.counter[i].answer,
-            stem : this.dynamicForm.counter[i].stem,
-            id : this.dynamicForm.counter[i].id,
-          number : this.dynamicForm.counter[i].number,
-          options: [this.dynamicForm.counter[i].optionA,this.dynamicForm.counter[i].optionB,this.dynamicForm.counter[i].optionC,this.dynamicForm.counter[i].optionD],
+            answer: this.dynamicForm.counter[i].answer,
+            stem: this.dynamicForm.counter[i].stem,
+            id: this.dynamicForm.counter[i].id,
+            number: this.dynamicForm.counter[i].number,
+            options: [this.dynamicForm.counter[i].optionA, this.dynamicForm.counter[i].optionB, this.dynamicForm.counter[i].optionC, this.dynamicForm.counter[i].optionD],
           })
         }
         let datas = {
@@ -261,7 +266,7 @@ export default {
         // if(i==this.sub_que_t[j].number)
         // {
         this.dynamicForm.counter.push({
-          number:this.sub_que_t[i].number,
+          number: this.sub_que_t[i].number,
           'answer': this.sub_que_t[i].answer,
           stem: this.sub_que_t[i].stem,
           optionA: this.sub_que_t[i].options[0],
@@ -314,4 +319,14 @@ export default {
 .form {
 }
 
+.collapse-title {
+  flex: 1 0 90%;
+  order: 1;
+}
+.information {
+  margin: 1% 2%;
+}
+.display{
+  margin-bottom: 2%;
+}
 </style>

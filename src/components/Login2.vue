@@ -1,9 +1,13 @@
 <template>
-  <el-container style="height: 100%">
+  <div>
+    <div class="loginbg">
+      <img :src="imgUrl" ref="img">
+    </div>
+      <el-container >
     <el-header class="header h-6 text-center">
       <el-row>
         <el-col :span="8">
-          <el-link :underline="false" href="/" class="el-icon-s-home h-6">首页</el-link>
+          <el-link :underline="false"></el-link>
         </el-col>
         <el-col :span="8">
           <h1 class="h-6 m-auto">Newbee-English</h1>
@@ -21,7 +25,7 @@
         </el-col>
       </el-row>
     </el-header>
-    <el-main class="text-center bcg transparent">
+    <el-main class="text-center  transparent" >
       <div class="login_box">
         <el-row :gutter="20">
           <el-col :span="8" :offset="8">
@@ -30,16 +34,17 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8" :offset="8">
-            <el-card shodow="always">
+            <el-card class="test" shodow="always">
               <h1>登录</h1>
               <el-divider></el-divider>
               <el-form ref="loginForm" :model="loginForm" label-width="10px" :rules="rule">
                 <el-form-item prop="name">
-                  <el-input v-model="loginForm.name" prefix-icon="el-icon-user-solid" placeholder="请输入用户名"
+                  <el-input class="input" v-model="loginForm.name" prefix-icon="el-icon-user-solid" placeholder="请输入用户名"
                             clearable></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码" clearable
+                  <el-input class="input" v-model="loginForm.password" prefix-icon="el-icon-lock" placeholder="请输入密码"
+                            clearable
                             show-password></el-input>
                 </el-form-item>
                 <div class="m-auto">
@@ -53,6 +58,8 @@
       </div>
     </el-main>
   </el-container>
+  </div>
+
 </template>
 
 <script>
@@ -60,6 +67,8 @@ export default {
   data() {
     return {
       name: undefined,
+      imgUrl: require('../assets/1.jpeg'),
+      index: 1,
       loginForm: {
         name: '',
         password: ''
@@ -75,7 +84,28 @@ export default {
       }
     }
   },
+  created() {
+    this.imgUrl = require('../assets/1.jpeg');
+    this.index = 1;
+  },
+  mounted() {
+    this.setTimer();
+  },
   methods: {
+    setTimer() {
+      this.timer = setInterval(() => {
+        console.log(this.$refs.img.style.opacity)
+        this.$refs.img.style.opacity = 1.0;
+        this.index = this.index < 10 ? this.index + 1 : 1;
+        this.imgUrl = require('../assets/' + this.index + '.jpeg');
+        setTimeout(() => {
+          this.$refs.img.style.opacity = 0.5;
+        }, 4000);
+      }, 5000);
+      setTimeout(() => {
+        this.$refs.img.style.opacity = 0.5;
+      }, 4000);
+    },
     login() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -87,11 +117,13 @@ export default {
 //     str:'123'
 // }
 //    console.log(typeof(jsons))
-          this.$axios({url:'api/admin/login', data:datas,
-           method:"post",
+          this.$axios({
+            url: 'api/admin/login', data: datas,
+            method: "post",
             headers: {
               'Content-Type': 'application/json'
-            }})
+            }
+          })
             .then(res => {
               console.log(res);
               if (res.data.ret === 0) {
@@ -111,7 +143,51 @@ export default {
 </script>
 
 <style scoped>
+.test {
+  opacity: 0.8;
+}
+
+.test .input {
+  color: black !important;
+}
+
 .setHeight {
   height: 210px;
+}
+
+/deep/ .el-input__inner::placeholder {
+  color: black;
+}
+
+.bcg {
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+
+}
+.loginbg {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  /*  size:contain|cover;*/
+  /*width:100%;*/
+  /*height: auto;*/
+  top: 0;
+}
+.loginbg img {
+  width: 100%;
+  /*height: 100%;*/
+        overflow: hidden;
+    position: absolute;
+        /*position: center;*/
+  transition: 1.5s all;
+}
+/deep/ .el-input__inner {
+  color: black;
+}
+.header{
+  background-color: #f5f5f5;
 }
 </style>
