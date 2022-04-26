@@ -32,11 +32,13 @@
               </div>
             </el-collapse-item>
             <div v-for="(item, index) in dynamicForm.counter">
-              <el-collapse-item  :name="''+(index+2)">
-                <span class="collapse-title" slot="title">第{{index+1}}小题信息</span>
-                 <div>
-                    <el-button class="button2" type="primary" round>查看题解</el-button>
-                  </div>
+              <el-collapse-item :name="''+(index+2)">
+                <span class="collapse-title" slot="title">第{{ index + 1 }}小题信息</span>
+                <div>
+                  <el-button class="button2" type="primary" round @click="changed(index,item.id)" style="margin-left: 16px;">
+                    查看题解
+                  </el-button>
+                </div>
                 <div v-show="!edit&&type!=='cloze_question'" v-model="item.stem" style="white-space: pre-wrap;"
                      class="text textbox sub_title">
                   {{ index + 1 }}.{{ item.stem }}
@@ -70,7 +72,8 @@
                     @change="onChange(2,$event)"></el-input>
         </el-form-item>
         <div v-for="(item, index) in dynamicForm.counter">
-          <el-form-item v-show="edit&&type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'" :prop="'counter.' + index + '.stem'"
+          <el-form-item v-show="edit&&type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'"
+                        :prop="'counter.' + index + '.stem'"
                         :rules="rule.stem">
             <el-input v-show="edit" v-model="item.stem" type="textarea" autosize
                       @change="onChange(3+(index)*5,$event)"></el-input>
@@ -105,13 +108,21 @@
             </el-select>
           </el-form-item>
         </div>
-<!--        <i-->
-<!--          :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
-<!--          @click="edit = !edit"-->
-<!--        ></i>-->
+        <!--        <i-->
+        <!--          :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
+        <!--          @click="edit = !edit"-->
+        <!--        ></i>-->
       </el-form>
       <br><br>
     </div>
+    <el-drawer
+      :visible.sync="drawer"
+      :direction="direction"
+      :before-close="handleClose">
+      <div class="sublote">
+        <h1>第{{ this.soluteid }}小题题解</h1>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -124,6 +135,8 @@ export default {
   },
   data() {
     return {
+      drawer: false,
+      direction: 'ltr',
       change: false,
       edit: false,
       activeNames: ['1', '2', '3', '4', '5'],
@@ -135,6 +148,7 @@ export default {
       times: 0,
       type: '',
       id: 0,
+      soluteid: 0,
       sub_que_num: 0,
       sub_que_t: [],
       dynamicForm: {
@@ -162,6 +176,19 @@ export default {
     // this.addInput();
   },
   methods: {
+    changed(index,thisid) {
+      this.drawer = true;
+      this.soluteid = index + 1;
+       // this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {
+        });
+    },
     this1() {
       console.log('yes')
     },
@@ -265,7 +292,9 @@ export default {
         // {
         // if(i==this.sub_que_t[j].number)
         // {
+        // console.log(this.sub_que_t)
         this.dynamicForm.counter.push({
+          id:this.sub_que_t[i].id,
           number: this.sub_que_t[i].number,
           'answer': this.sub_que_t[i].answer,
           stem: this.sub_que_t[i].stem,
@@ -323,14 +352,21 @@ export default {
   flex: 1 0 90%;
   order: 1;
 }
+
 .information {
   margin: 1% 2%;
 }
-.display{
+
+.display {
   margin-bottom: 2%;
 }
-.button2{
+
+.button2 {
   position: absolute;
   right: 5%;
+}
+
+.sublote {
+  margin: 5%;
 }
 </style>

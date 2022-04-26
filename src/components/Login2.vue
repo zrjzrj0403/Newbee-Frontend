@@ -69,6 +69,7 @@ export default {
       name: undefined,
       imgUrl: require('../assets/1.jpeg'),
       index: 1,
+      timer2:null,
       loginForm: {
         name: '',
         password: ''
@@ -91,20 +92,28 @@ export default {
   mounted() {
     this.setTimer();
   },
+   beforeDestroy() {//页面关闭前关闭定时器 （这个才有用）
+    clearInterval(this.timer);
+    clearTimeout(this.timer1);
+     clearTimeout(this.timer2);
+  },
   methods: {
     setTimer() {
+      this.$nextTick(() => {
       this.timer = setInterval(() => {
         console.log(this.$refs.img.style.opacity)
         this.$refs.img.style.opacity = 1.0;
         this.index = this.index < 10 ? this.index + 1 : 1;
         this.imgUrl = require('../assets/' + this.index + '.jpeg');
-        setTimeout(() => {
+        this.timer1=setTimeout(() => {
           this.$refs.img.style.opacity = 0.5;
         }, 4000);
       }, 5000);
-      setTimeout(() => {
+      this.timer2=setTimeout(() => {
         this.$refs.img.style.opacity = 0.5;
       }, 4000);
+    })
+
     },
     login() {
       this.$refs.loginForm.validate(valid => {
