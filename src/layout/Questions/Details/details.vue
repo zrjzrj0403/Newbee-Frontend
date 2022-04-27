@@ -35,7 +35,8 @@
               <el-collapse-item :name="''+(index+2)">
                 <span class="collapse-title" slot="title">第{{ index + 1 }}小题信息</span>
                 <div>
-                  <el-button class="button2" type="primary" round @click="changed(index,item.id)" style="margin-left: 16px;">
+                  <el-button class="button2" type="primary" round @click="changed(index,item.id)"
+                             style="margin-left: 16px;">
                     查看题解
                   </el-button>
                 </div>
@@ -121,6 +122,11 @@
       :before-close="handleClose">
       <div class="sublote">
         <h1>第{{ this.soluteid }}小题题解</h1>
+        <el-table :data="gridData">
+          <el-table-column property="date" label="日期" width="150"></el-table-column>
+          <el-table-column property="name" label="姓名" width="200"></el-table-column>
+          <el-table-column property="address" label="地址"></el-table-column>
+        </el-table>
       </div>
     </el-drawer>
   </div>
@@ -142,6 +148,7 @@ export default {
       activeNames: ['1', '2', '3', '4', '5'],
       item2: '11',
       paths: '',
+       gridData: [],
       judge: 0,
       item: '',
       textarea: 666,
@@ -176,10 +183,10 @@ export default {
     // this.addInput();
   },
   methods: {
-    changed(index,thisid) {
+    changed(index, thisid) {
       this.drawer = true;
       this.soluteid = index + 1;
-       // this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
+      this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -294,7 +301,7 @@ export default {
         // {
         // console.log(this.sub_que_t)
         this.dynamicForm.counter.push({
-          id:this.sub_que_t[i].id,
+          id: this.sub_que_t[i].id,
           number: this.sub_que_t[i].number,
           'answer': this.sub_que_t[i].answer,
           stem: this.sub_que_t[i].stem,
