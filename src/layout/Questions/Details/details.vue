@@ -117,18 +117,61 @@
       <br><br>
     </div>
     <el-drawer
+      size="40%"
       :visible.sync="drawer"
       :direction="direction"
-      :before-close="handleClose">
+      :before-close="handleClosedr">
+      <span slot="title">
+             <h1 style="display:inline-block">第{{ this.soluteid }}小题题解</h1>
+        <el-button class="ifo" type="primary" round @click="look()">{{ msg }}</el-button>
+      </span>
       <div class="sublote">
-        <h1>第{{ this.soluteid }}小题题解</h1>
         <el-table :data="gridData">
-          <el-table-column property="date" label="日期" width="150"></el-table-column>
-          <el-table-column property="name" label="姓名" width="200"></el-table-column>
-          <el-table-column property="address" label="地址"></el-table-column>
+          <el-table-column property="content" label="题解内容"></el-table-column>
+          <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
+          <el-table-column property="reports" label="举报数" width="80"></el-table-column>
+          <el-table-column prop="operate" label="操作" width="80">
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
+              >删除
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </el-drawer>
+    <div class="sub">
+      <el-button type="text" @click="dialogTableVisible = true"></el-button>
+      <el-dialog class="dialog-vertica" width="50%" :modal=false :before-close="handleClosedi"
+                 :visible.sync="dialogTableVisible">
+         <span slot="title">
+<!--           :close-on-click-modal=false-->
+          <h1>第{{ this.soluteid }}小题题目信息</h1>
+        </span>
+        <div v-if="sub_que_t[soluteid2]">
+          <!--          {{sub_que_t[1].options[0]}}-->
+          <div v-show="!edit&&type!=='cloze_question'" style="white-space: pre-wrap;"
+               class="text textbox sub_title">
+            {{ soluteid }}.{{ sub_que_t[soluteid2].stem }}
+          </div>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+            A. {{ sub_que_t[soluteid2].options[0] }}
+          </div>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+            B.{{ sub_que_t[soluteid2].options[1] }}
+          </div>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+            C.{{ sub_que_t[soluteid2].options[2] }}
+          </div>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+            D.{{ sub_que_t[soluteid2].options[3] }}
+          </div>
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text">
+            答案为：{{ sub_que_t[soluteid2].answer }}
+          </div>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -141,14 +184,17 @@ export default {
   },
   data() {
     return {
+      dialogTableVisible: false,
       drawer: false,
-      direction: 'ltr',
+      direction: 'rtl',
+      msg: '关闭题目信息',
+      direction2: 'ltr',
       change: false,
       edit: false,
       activeNames: ['1', '2', '3', '4', '5'],
       item2: '11',
       paths: '',
-       gridData: [],
+      gridData: [],
       judge: 0,
       item: '',
       textarea: 666,
@@ -156,6 +202,7 @@ export default {
       type: '',
       id: 0,
       soluteid: 0,
+      soluteid2: 0,
       sub_que_num: 0,
       sub_que_t: [],
       dynamicForm: {
@@ -183,32 +230,82 @@ export default {
     // this.addInput();
   },
   methods: {
-    changed(index, thisid) {
-      this.drawer = true;
-      this.soluteid = index + 1;
-      this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
+    look() {
+      this.dialogTableVisible = !this.dialogTableVisible;
+      if (this.dialogTableVisible) {
+        this.msg = "关闭题目信息";
+      } else {
+        this.msg = "查看题目信息";
+      }
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
+    handleClosedi(done) {
+      this.$confirm('确认关闭该小题信息展示框？')
         .then(_ => {
           done();
         })
         .catch(_ => {
         });
     },
+    handleDelete(index, row) {
+      this.$confirm('此操作将永久删除此题解, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete(' /api/admin/solution', {
+          params: {id: row.id},
+        })
+          .then(res => {
+            if (res.data.ret === 0) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.$router.go(0);
+            } else {
+              this.$message({
+                type: 'info',
+                message: '删除失败'
+              });
+            }
+          })
+      })
+    },
+    changed(index, thisid) {
+      this.drawer = true;
+      this.dialogTableVisible = true;
+      this.soluteid = index + 1;
+      this.soluteid2 = index;
+      this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
+        .then(res => {
+          this.gridData = res.data.solutions;
+        })
+    }
+    ,
+    handleClosedr(done) {
+      this.$confirm('确认关闭题解信息？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {
+        });
+    }
+    ,
     this1() {
       console.log('yes')
-    },
+    }
+    ,
     changeit() {
       this.edit = !this.edit;
       this.judge = 1;
-    },
+    }
+    ,
     confirmit() {
       if (this.judge === 1) {
-        console.log(this.dynamicForm.title);
-        console.log(this.dynamicForm.text);
-        console.log(this.dynamicForm.counter);
-        console.log(this.type);
+        // console.log(this.dynamicForm.title);
+        // console.log(this.dynamicForm.text);
+        // console.log(this.dynamicForm.counter);
+        // console.log(this.type);
         // console.log()
         var i;
         for (i = 0; i < this.dynamicForm.counter.length; i++) {
@@ -238,11 +335,13 @@ export default {
         this.judge = 0;
         this.$router.go(0);
       }
-    },
+    }
+    ,
     getfocus() {
       this.thistext = this.dynamicForm.title;
       console.log(this.thistext)
-    },
+    }
+    ,
     get() {
       // console.log('1')
       this.id = this.$route.query.id;
@@ -257,7 +356,8 @@ export default {
         this.item = '阅读理解';
         this.paths = '/question/readingcomprehension';
       }
-    },
+    }
+    ,
     get_details() {
       this.$axios.get('/api/admin/designated_question', {params: {id: this.id}})
         .then(res => {
@@ -276,13 +376,15 @@ export default {
           this.addInput();
           this.times = this.times + 1;
         })
-    },
+    }
+    ,
     onChange(a, e) {
       console.log(a)
       console.log(e)
       // const { value } = e.target;
       // console.log(e.target);
-    },
+    }
+    ,
     addInput() {
       var i;
       var j = 0;
@@ -374,6 +476,33 @@ export default {
 }
 
 .sublote {
-  margin: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+/deep/ .el-dialog__wrapper {
+  margin-right: 40%;
+  /*margin-top: 25%;*/
+
+}
+
+/deep/ .el-drawer__header {
+  color: black;
+}
+
+.dialog-vertical {
+  display: flex;
+  padding: 20px;
+}
+
+/deep/ .el-dialog {
+  margin-top: 25% !important;
+}
+
+.ifo {
+  position: absolute;
+  right: 10%;
+
 }
 </style>

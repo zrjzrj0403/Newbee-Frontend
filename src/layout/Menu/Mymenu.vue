@@ -57,28 +57,28 @@ export default {
     };
   },
   created() {
-    //  this.path=this.$route.path.split('?')[0].replace(/(#|\/)/g,'')
-    //    if(this.path==='details')
-    // {
-    //   this.type=this.$route.query.type;
-    //   console.log(this.type);
-    //   if(this.type==='choice_question')
-    //    {
-    //     this.act='/question/multiplechoice';
-    //    }
-    //    else if(this.type==='cloze_question')
-    //    {
-    //     this.act='/question/cloze';
-    //    }
-    //    else
-    //    {
-    //      this.act='/question/readingcomprehension';
-    //    }
-    // }
-    // else
-    // {
-    //     this.act = this.$route.path;
-    // }
+     this.path=this.$route.path.split('?')[0].replace(/(#|\/)/g,'')
+       if(this.path==='details')
+    {
+      this.type=this.$route.query.type;
+      console.log(this.type);
+      if(this.type==='choice_question')
+       {
+        this.act='/question/multiplechoice';
+       }
+       else if(this.type==='cloze_question')
+       {
+        this.act='/question/cloze';
+       }
+       else
+       {
+         this.act='/question/readingcomprehension';
+       }
+    }
+    else
+    {
+        this.act = this.$route.path;
+    }
   },
    // watch: {
    //   $route(to, from) {
