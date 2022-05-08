@@ -26,7 +26,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="小题数量" prop="sub_que_num">
-          <el-input-number v-model="question.sub_que_num" @change="handleChange" :min="1" :max="10"
+          <el-input-number v-model="question.sub_que_num" @change="handleChange" :min="1" :max="20"
                            label="描述文字"></el-input-number>
         </el-form-item>
         <el-form-item v-if="question.type!== 'choice_question'" label="题目正文" prop="text">

@@ -1,11 +1,6 @@
 <template>
   <div>
-    <div class="title1">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{path: '/home3' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
+
     <div class="header1">
       <el-row class="home" :gutter="10">
         <!--span默认一共是24，这里占8 下面占16，所以这两个分隔栏所占的宽度 是1:2-->
@@ -119,7 +114,7 @@ export default {
 <style>
 .header1 {
   box-sizing: border-box;
-  padding-left: 3% /* 给gutter留padding */
+  padding-left: 5% /* 给gutter留padding */
 }
 
 .user2 {
