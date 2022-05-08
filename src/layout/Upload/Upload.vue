@@ -46,7 +46,7 @@
             <el-input v-model="item.stem" type="textarea" rows="2"></el-input>
           </el-form-item>
           <el-form-item label="子题目选项" :prop="'counter.' + index + '.option'" :rules="rules2.option">
-            <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)"></el-input>
+            <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)" :placeholder="'请输入形如'+'\nA.xxx'+'\nB.xxx'+'\nC.xxx'+ '\nD.xxx'+'\n的4个选项'+'\nps:为了保证录入文章的真实性，请不要在英文选项里出现中文字符'"></el-input>
           </el-form-item>
           <el-form-item label="子题目答案" :prop="'counter.' + index + '.answer'" :rules="rules2.answer">
             <el-select v-model="item.answer" placeholder="请选择子题目答案">
