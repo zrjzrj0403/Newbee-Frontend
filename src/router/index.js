@@ -9,7 +9,10 @@ import MainPage from "../components/MainPage";
 import Index from "../layout/Menu/index";
 import Home2 from "../components/Home2";
 import Home3 from "../layout/Home/index";
-
+const routerPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 const Announcement = () => import('../layout/Announcement/Announcement')
 const Question = () => import('../layout/Questions/Questions')
 const User = () => import('../layout/User/User')

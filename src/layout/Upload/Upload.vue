@@ -239,7 +239,7 @@ export default {
       //   "B.Rideouts research interest lies in electric engineering\n" +
       //   "C.the efforts to protect condors have brought good results\n" +
       //   "D.researchers have found the final answers to the problem";
-      this.str = e.split(/A\.\s*((?:[a-zA-Z0-9-_'’.?!,]+\x20?)+)\s*\r*\n*B\.\s*((?:[a-zA-Z0-9-_'’.?!,]+\x20?)+)\w*\s*\r*\n*C\.\s*((?:[a-zA-Z0-9-_'’.!?,]+\x20?)+)\w*\s*\r*\n*D\.\s*((?:[a-zA-Z0-9-_'’.!?,]+\x20?)+)\s*\r*\n*/);//使用，作为分隔符，输出：["Hello","can I help you?"]
+      this.str = e.split(/A\.\s*((?:[a-zA-Z0-9-_'’：:.?!,]+\x20?)+)\s*\r*\n*B\.\s*((?:[a-zA-Z0-9-_':：’.?!,]+\x20?)+)\w*\s*\r*\n*C\.\s*((?:[a-zA-Z0-9-：:_'’.!?,]+\x20?)+)\w*\s*\r*\n*D\.\s*((?:[a-zA-Z0-9-_'’.:：!?,]+\x20?)+)\s*\r*\n*/);//使用，作为分隔符，输出：["Hello","can I help you?"]
       this.savestr[a] = this.str;
       // console.log(this.savestr)
       // console.log(e)

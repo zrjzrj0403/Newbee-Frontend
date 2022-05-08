@@ -35,7 +35,8 @@
               <el-collapse-item :name="''+(index+2)">
                 <span class="collapse-title" slot="title">第{{ index + 1 }}小题信息</span>
                 <div>
-                  <el-button class="button2" type="primary" round @click="changed(index,item.id)"
+                  <el-button class="button2" :type='item.has_bad_solution==1?"danger":"primary"' round
+                             @click="changed(index,item.id)"
                              style="margin-left: 16px;">
                     查看题解
                   </el-button>
@@ -117,6 +118,7 @@
       <br><br>
     </div>
     <el-drawer
+      :destroy-on-close='true'
       size="40%"
       :visible.sync="drawer"
       :direction="direction"
@@ -126,10 +128,28 @@
         <el-button class="ifo" type="primary" round @click="look()">{{ msg }}</el-button>
       </span>
       <div class="sublote">
-        <el-table :data="gridData">
+        <div class="good">
+          <h1>需要处理的题解</h1>
+            <el-table :data="badDate" :row-class-name="tableRowClassName">
           <el-table-column property="content" label="题解内容"></el-table-column>
           <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
           <el-table-column property="reports" label="举报数" width="80"></el-table-column>
+          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理" width="80"></el-table-column>
+          <el-table-column prop="operate" label="操作" width="80">
+            <template slot-scope="scope">
+              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
+              >删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        </div>
+         <h1>暂不处理的题解</h1>
+        <el-table :data="goodDate" :row-class-name="tableRowClassName">
+          <el-table-column property="content" label="题解内容"></el-table-column>
+          <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
+          <el-table-column property="reports" label="举报数" width="80"></el-table-column>
+          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理" width="80"></el-table-column>
           <el-table-column prop="operate" label="操作" width="80">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
@@ -141,7 +161,7 @@
       </div>
     </el-drawer>
     <div class="sub">
-      <el-button type="text" @click="dialogTableVisible = true"></el-button>
+<!--      <el-button type="text" @click="dialogTableVisible = true"></el-button>-->
       <el-dialog class="dialog-vertica" width="50%" :modal=false :before-close="handleClosedi"
                  :visible.sync="dialogTableVisible">
          <span slot="title">
@@ -194,7 +214,8 @@ export default {
       activeNames: ['1', '2', '3', '4', '5'],
       item2: '11',
       paths: '',
-      gridData: [],
+      goodDate: [],
+      badDate:[],
       judge: 0,
       item: '',
       textarea: 666,
@@ -205,6 +226,7 @@ export default {
       soluteid2: 0,
       sub_que_num: 0,
       sub_que_t: [],
+      test: [],
       dynamicForm: {
         title: '',
         text: '',
@@ -230,6 +252,16 @@ export default {
     // this.addInput();
   },
   methods: {
+     FunctionStatus(row, column){
+       return row.bad_solution== '1' ? "是" : row.bad_solution== '0' ? "否" : "暂无";
+    },
+    tableRowClassName({row, rowIndex}) {
+      if (row.bad_solution === 1) {
+        return 'warning-row';
+      } else {
+        return '';
+      }
+    },
     look() {
       this.dialogTableVisible = !this.dialogTableVisible;
       if (this.dialogTableVisible) {
@@ -273,12 +305,34 @@ export default {
     },
     changed(index, thisid) {
       this.drawer = true;
-      this.dialogTableVisible = true;
       this.soluteid = index + 1;
       this.soluteid2 = index;
+      var i;
+      this.goodDate.length=0;
+      this.badDate.length=0;
       this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
         .then(res => {
-          this.gridData = res.data.solutions;
+                  this.dialogTableVisible = true;
+          for (i = 0; i < res.data.solutions.length; i++) {
+            if (res.data.solutions[i].bad_solution === 1) {
+              this.badDate.push({
+                bad_solution:res.data.solutions[i].bad_solution,
+                content:res.data.solutions[i].content,
+                id:res.data.solutions[i].id,
+                likes:res.data.solutions[i].likes,
+                reports:res.data.solutions[i].reports,
+              })
+            }
+               else{
+              this.goodDate.push({
+                bad_solution:res.data.solutions[i].bad_solution,
+                content:res.data.solutions[i].content,
+                id:res.data.solutions[i].id,
+                likes:res.data.solutions[i].likes,
+                reports:res.data.solutions[i].reports,
+              })
+            }
+          }
         })
     }
     ,
@@ -286,6 +340,7 @@ export default {
       this.$confirm('确认关闭题解信息？')
         .then(_ => {
           done();
+          this.dialogTableVisible = false;
         })
         .catch(_ => {
         });
@@ -313,6 +368,7 @@ export default {
             answer: this.dynamicForm.counter[i].answer,
             stem: this.dynamicForm.counter[i].stem,
             id: this.dynamicForm.counter[i].id,
+            has_bad_solution: this.dynamicForm.counter[i].has_bad_solution,
             number: this.dynamicForm.counter[i].number,
             options: [this.dynamicForm.counter[i].optionA, this.dynamicForm.counter[i].optionB, this.dynamicForm.counter[i].optionC, this.dynamicForm.counter[i].optionD],
           })
@@ -322,6 +378,7 @@ export default {
           type: this.type,
           text: this.dynamicForm.text,
           title: this.dynamicForm.title,
+
           sub_que_num: this.sub_que_num,
           sub_que: this.dynamicForm.sub_que,
         }
@@ -404,6 +461,7 @@ export default {
         // console.log(this.sub_que_t)
         this.dynamicForm.counter.push({
           id: this.sub_que_t[i].id,
+          has_bad_solution: this.sub_que_t[i].has_bad_solution,
           number: this.sub_que_t[i].number,
           'answer': this.sub_que_t[i].answer,
           stem: this.sub_que_t[i].stem,
@@ -480,6 +538,9 @@ export default {
   margin-right: 5%;
   margin-bottom: 5%;
 }
+.good{
+  margin-bottom: 5%;
+}
 
 /deep/ .el-dialog__wrapper {
   margin-right: 40%;
@@ -498,6 +559,14 @@ export default {
 
 /deep/ .el-dialog {
   margin-top: 25% !important;
+}
+
+/deep/ .no {
+  background: white;
+}
+
+/deep/ .el-table .warning-row {
+  background: #ffb3a7;
 }
 
 .ifo {

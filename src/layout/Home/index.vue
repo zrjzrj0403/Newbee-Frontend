@@ -1,479 +1,202 @@
 <template>
   <div>
-    <div style="height:100px;">
-      <div class="box">
-        <e-charts
-          class="chart" :option="optionbiaoti"/>
-      </div>
-      <img class='img' src="../../assets/logo1.jpg" >
-      <!--      style="display:inline-block"-->
+    <div class="title1">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{path: '/home3' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-        <e-charts
-          class="chart" :option="optionxuanze"/>
-        <e-charts
-          class="chart" :option="optionwanxing"/>
-        <e-charts
-          class="chart" :option="optionyuedu"/>
+    <div class="header1">
+      <el-row class="home" :gutter="10">
+        <!--span默认一共是24，这里占8 下面占16，所以这两个分隔栏所占的宽度 是1:2-->
+        <el-col :span="8" style="margin-top: 20px">
+          <!--shadow属性设置卡片阴影出现的时机-->
+          <el-card shadow='hover' >
+            <div class="user2">
+              <img class='img2' src="../../assets/logo1.jpg" height="200" width="200"/>
+              <div class="userinfo">
+                <p class="name">Newbee-English</p>
+                <p class="access">欢迎使用Newbee-English管理系统</p>
+              </div>
+            </div>
+            <div class="login-info">
+              <p>本次版本发布时间：<span>2022-5-11</span></p>
+              <p>本次版本号：<span>v0.1</span></p>
+            </div>
+          </el-card>
+          <el-card class="card1" shadow="hover" style=" margin-top: 20px" >
+          </el-card>
+        </el-col>
+        <el-col :span="15" style="margin-top: 20px">
+          <el-row :gutter="10" >
+          <el-col class='col1' :span="8" >
+          <div class="num">
+            <el-card class="userico" shadow="hover" body-style="{ display: 'flex', padding: 0}">
+              <div class="icon1">
+                <i class="icon1_1 el-icon-user"></i>
+              </div>
+              <div class="miaoshu1">
+                <div class="miaoshu">
+                <p class="num biaoshi">1234</p>
+                <p class="txt">用户数量</p>
+              </div>
+              </div>
+            </el-card>
+          </div>
+        </el-col>
+        <el-col class='col1' :span="8" >
+          <div class="num">
+            <el-card class="userico" shadow="hover" body-style="{ display: 'flex', padding: 0}">
+              <div class="icon2">
+                <i class="icon1_1 el-icon-tickets"></i>
+              </div>
+             <div class="miaoshu1">
+                <div class="miaoshu">
+                <p class="num biaoshi2">352</p>
+                <p class="txt">题目数量</p>
+              </div>
+              </div>
+            </el-card>
+          </div>
+        </el-col>
+        <el-col class='col1' :span="8" >
+          <div class="num">
+            <el-card class="userico" shadow="hover" body-style="{ display: 'flex', padding: 0}">
+              <div class="icon3">
+                <i class="icon1_1 el-icon-warning-outline"></i>
+              </div>
+              <div class="miaoshu1">
+                <div class="miaoshu">
+                <p class="num biaoshi3">1234</p>
+                <p class="txt">待处理题解</p>
+              </div>
+              </div>
+            </el-card>
+          </div>
+        </el-col>
+          </el-row>
+          <el-row :gutter="10">
+           <el-col :span="24" >
+             <el-card class="card1" style=" margin-top: 20px ;height:480px" shadow="hover">
+          </el-card>
+           </el-col>
+          </el-row>
+        </el-col>
 
+      </el-row>
+    </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: "index",
   data() {
     return {
-      // 'Welcome To Wew Bee English'
-      // data: this.getRandomData(),
-      optionbiaoti: {
-        graphic: {
-          elements: [
-            {
-              type: 'text',
-              left: '1%',
-              top: '3%',
-              style: {
-                text: 'Welcome To New Bee English',
-                fontSize: 80,
-                fontWeight: 'bold',
-                lineDash: [0, 200],
-                lineDashOffset: 0,
-                fill: 'transparent',
-                stroke: '#000',
-                lineWidth: 1
-              },
-              keyframeAnimation: {
-                duration: 6000,
-                loop: true,
-                keyframes: [
-                  {
-                    percent: 0.25,
-                    style: {
-                      fill: 'transparent',
-                      lineDashOffset: 200,
-                      lineDash: [100, 0]
-                    }
-                  },
-                  {
-                    // Stop for a while.
-                    percent: 0.25,
-                    style: {
-                      fill: 'transparent'
-                    }
-                  },
-                  {
-                    percent: 0.30,
-                    style: {
-                      fill:"black"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      optionxuanze: {
-        title: {
-          text: '特此表彰，选择题做对数量前七名',
-          subtext: '请在每周日发送表彰公告'
-        },
-        tooltip: {
-          trigger: 'axis',
-          // formatter: '{a} <br/>{b}: {c} ({d}%)'
-          formatter: function (params) {
-            return (
-              (params[0].name ? params[0].name : "") + ':' + (params[0].data.code ? params[0].data.code : "") +
-              '<br/>' +
-              '答对数量: ' +
-              (params[0].value ? params[0].value : "")
-            );
-          },
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: ['First', 'Second', 'Third', 'Fourth', 'Fiftn', 'Sixth', 'Seventh', 'eighth', 'ninth', 'tenth']
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: [
-              {
-                value: 300,
-                code: '小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 200,
-                code: '还是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 150,
-                code: '又是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 110,
-                code: '小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 100,
-                code: '又是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 80,
-                code: '还是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 70,
-                code: '小豪',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 60,
-                code: '小徐',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 50,
-                code: '小ld',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 40,
-                code: '小姜',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-            ],
-            type: 'bar',
-            label: {
-              show: true,
-              position: 'top'
-            },
-          },
-        ],
-      },
-      optionwanxing: {
-        title: {
-          text: '特此表彰，完型做对数量前七名',
-        },
-        tooltip: {
-          trigger: 'axis',
-          // formatter: '{a} <br/>{b}: {c} ({d}%)'
-          formatter: function (params) {
-            return (
-              (params[0].name ? params[0].name : "") + ':' + (params[0].data.code ? params[0].data.code : "") +
-              '<br/>' +
-              '答对数量: ' +
-              (params[0].value ? params[0].value : "")
-            );
-          },
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: ['First', 'Second', 'Third', 'Fourth', 'Fiftn', 'Sixth', 'Seventh', 'eighth', 'ninth', 'tenth']
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: [
-              {
-                value: 300,
-                code: '小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 200,
-                code: '还是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 150,
-                code: '又是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 110,
-                code: '小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 100,
-                code: '又是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 80,
-                code: '还是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 70,
-                code: '小豪',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 60,
-                code: '小徐',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 50,
-                code: '小ld',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 40,
-                code: '小姜',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-            ],
-            type: 'bar',
-            label: {
-              show: true,
-              position: 'top'
-            },
-          },
-        ],
-      },
-      optionyuedu: {
-        title: {
-          text: '特此表彰，阅读数量前七名',
-        },
-        tooltip: {
-          trigger: 'axis',
-          // formatter: '{a} <br/>{b}: {c} ({d}%)'
-          formatter: function (params) {
-            return (
-              (params[0].name ? params[0].name : "") + ':' + (params[0].data.code ? params[0].data.code : "") +
-              '<br/>' +
-              '答对数量: ' +
-              (params[0].value ? params[0].value : "")
-            );
-          },
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: ['First', 'Second', 'Third', 'Fourth', 'Fiftn', 'Sixth', 'Seventh', 'eighth', 'ninth', 'tenth']
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: [
-              {
-                value: 300,
-                code: '小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 200,
-                code: '还是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 150,
-                code: '又是小赵',
-                itemStyle: {
-                  color: '#a90000'
-                },
-              },
-              {
-                value: 110,
-                code: '小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 100,
-                code: '又是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 80,
-                code: '还是小李',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 70,
-                code: '小豪',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 60,
-                code: '小徐',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 50,
-                code: '小ld',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-              {
-                value: 40,
-                code: '小姜',
-                itemStyle: {
-                  color: 'skyblue'
-                },
-              },
-            ],
-            type: 'bar',
-            label: {
-              show: true,
-              position: 'top'
-            },
-          },
-        ],
-      },
-    };
-    // return {
-    //   data: this.getRandomData(),
-    // };
-  },
-  computed: {
-    // option1() {
-    //   return {
-    //     xAxis: {
-    //       type: 'category',
-    //       data: this.data.map(d => d.time),
-    //     },
-    //     yAxis: {
-    //       type: 'value'
-    //     },
-    //     series: [
-    //       {
-    //         data: this.data.map(d => d.value),
-    //         type: 'line'
-    //       }
-    //     ],
-    //   };
-    // },
+      userImg: require('../../assets/logo.jpg'),
+      countData: [],
+      tableData: [],
+      tableLabel: {
+        name: '课程',
+        todayBuy: '今日购买',
+        monthBuy: '本月购买',
+        totalBuy: '总购买'
+      }
+    }
   },
   methods: {
-    // getRandomData() {
-    //   return [
-    //     {
-    //       time: '2021-01-01',
-    //       value: Math.random() * 100,
-    //     },
-    //     {
-    //       time: '2021-01-01',
-    //       value: Math.random() * 100,
-    //     },
-    //     {
-    //       time: '2021-01-01',
-    //       value: Math.random() * 100,
-    //     },
-    //     {
-    //       time: '2021-01-01',
-    //       value: Math.random() * 100,
-    //     },
-    //     {
-    //       time: '2021-01-01',
-    //       value: Math.random() * 100,
-    //     },
-    //   ];
-    // },
+    getTableData() {
+      // this.$http.get('/home/getData').then(res => {
+      //     res = res.data
+      //     this.tableData = res.data.tableData
+      // })
+    }
   },
+  //一进组件就会去请求后端接口 获取首页数据
   created() {
-    // setInterval(() => {
-    //   this.data = this.getRandomData();
-    // }, 1000);
-  },
-};
-
+    // this.getTableData()
+  }
+}
 </script>
-
-<style scoped>
-.chart {
-  height: 350px;
+<style>
+.header1 {
+  box-sizing: border-box;
+  padding-left: 3% /* 给gutter留padding */
 }
 
-.box {
-  position: absolute;
-  right: 8%;
-  height: 100px;
-  width: 80%;
+.user2 {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.img2 {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-right: 40px;
+}
+
+.name {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.access {
+  color: #999999;
+}
+
+.col1 {
+  /*margin-right: 3%;*/
+}
+
+.icon1 {
+  background-color: #409EFF;
+  height: 100%;
   display: inline-block
 }
-.img{
-   position: absolute;
-  right: 0px;
-  height:15%;
-  width: auto;
-  /*background-color: #fffff;*/
+.icon2 {
+  background-color: #67C23A;
+  height: 100%;
+  display: inline-block
+}
+.icon3 {
+  background-color: #F56C6C;
+  height: 100%;
+  display: inline-block
+}
+.icon1_1 {
+  padding: 20px;
+    font-size: 45px;
+}
+.miaoshu1{
+  height: 85px;
+  width: 60%;
+  display: inline-block;
+  text-align: center;
+  vertical-align:center;
+}
+.biaoshi{
+  font-size: 30px;
+  color: #409EFF;
+}
+.biaoshi2{
+  font-size: 30px;
+  color: #67C23A;
+}
+.biaoshi3{
+  font-size: 30px;
+  color: #F56C6C;
+}
+.card1{
+  height: 300px;
+}
+.miaoshu {
+  font-size: 16px;
+  display: inline-block;
+}
+
+.userico .el-card__body {
+  padding: 0px !important;
 }
 </style>

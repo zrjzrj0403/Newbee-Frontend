@@ -42,6 +42,10 @@ html,body,#app,.el-container{
 .transparent{
 opacity: 0.8;
 }
+/*/deep/ .el-notification{*/
+/*  background-color: #ffb3a7;*/
+/*  border: 1px solid #ffb3a7;*/
+/*}*/
 #opaque{
   opacity:1.0;
 }
