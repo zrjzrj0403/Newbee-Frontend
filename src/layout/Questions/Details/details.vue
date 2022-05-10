@@ -135,8 +135,11 @@
           <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
           <el-table-column property="reports" label="举报数" width="80"></el-table-column>
           <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理" width="80"></el-table-column>
-          <el-table-column prop="operate" label="操作" width="80">
+          <el-table-column prop="operate" label="操作" width="160">
             <template slot-scope="scope">
+              <el-button size="mini" :disabled="scope.row.approved === 1"  type="success" @click="approved(scope.$index, scope.row) "
+              >认可
+              </el-button>
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
               >删除
               </el-button>
@@ -252,6 +255,19 @@ export default {
     // this.addInput();
   },
   methods: {
+    approved(index, row){
+        let datas = {
+            solution_id: row.id,
+          }
+          this.$axios({
+            url: '/api/admin/solution', data: datas,
+            method: "post",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+       this.$router.go(0);
+    },
      FunctionStatus(row, column){
        return row.bad_solution== '1' ? "是" : row.bad_solution== '0' ? "否" : "暂无";
     },
@@ -312,10 +328,12 @@ export default {
       this.badDate.length=0;
       this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
         .then(res => {
+          console.log(res.data.solutions);
                   this.dialogTableVisible = true;
           for (i = 0; i < res.data.solutions.length; i++) {
             if (res.data.solutions[i].bad_solution === 1) {
               this.badDate.push({
+                approved:res.data.solutions[i].approved,
                 bad_solution:res.data.solutions[i].bad_solution,
                 content:res.data.solutions[i].content,
                 id:res.data.solutions[i].id,
@@ -356,7 +374,14 @@ export default {
     }
     ,
     confirmit() {
-      if (this.judge === 1) {
+        if (this.judge === 1) {
+        this.$confirm('是否确认编辑该题目?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+      .then(() => {
+
         // console.log(this.dynamicForm.title);
         // console.log(this.dynamicForm.text);
         // console.log(this.dynamicForm.counter);
@@ -391,8 +416,7 @@ export default {
         })
         this.judge = 0;
         this.$router.go(0);
-      }
-    }
+    })}}
     ,
     getfocus() {
       this.thistext = this.dynamicForm.title;

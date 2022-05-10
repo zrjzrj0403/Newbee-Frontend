@@ -11,18 +11,18 @@
     <!--    搜索区域-->
     <div class="userheader">
       <el-input  @keyup.enter.native="get_information(1,input)" v-model="input" placeholder="请输入内容"></el-input>
-      <el-button type="primary">查询</el-button>
+      <el-button type="primary" @click="get_information(1,input)">查询</el-button>
       <el-button type="primary" @click="batchDelete(tableChecked)">批量删除</el-button>
     </div>
     <!--  2.表格区域 展示视图数据-->
     <div class="wrapper">
       <el-table border  :data="tableData" style="width: 100%" @selection-change="handleSelectionChange" @cell-click="handle" :row-class-name="tableRowClassName">
         <el-table-column type="selection" width="55" class='no'></el-table-column>
-        <el-table-column prop="title" label="题目名称" width="900" @click="test"></el-table-column>
+        <el-table-column prop="title" label="题目名称"  @click="test"></el-table-column>
          <el-table-column prop="id" label="题目id" width="180"></el-table-column>
         <el-table-column prop="sub_que_num" label="所含小题数量" width="180"></el-table-column>
          <el-table-column prop="has_bad_solution" label="是否存在有问题的题解" width="180" :formatter="FunctionStatus"></el-table-column>
-        <el-table-column prop="operate" class='no' label="操作">
+        <el-table-column prop="operate" class='no' width="180" label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
             >删除</el-button>

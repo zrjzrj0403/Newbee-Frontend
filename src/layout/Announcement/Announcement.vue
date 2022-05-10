@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box3">
     <div class="title1">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home3' }">首页</el-breadcrumb-item>
@@ -24,20 +24,20 @@
                 v-model="textarea">
       </el-input>
       <div style="float:right">
-        <div class="block">
-          <span class="demonstration">请选择发布时间</span>
-          <el-date-picker
-            v-model="value2"
-            align="right"
-            type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions1">
-          </el-date-picker>
-          <el-time-picker
-            v-model="value1"
-            placeholder="请选择一小时之后的日期">
-          </el-time-picker>
-        </div>
+        <!--        <div class="block">-->
+        <!--          <span class="demonstration">请选择发布时间</span>-->
+        <!--          <el-date-picker-->
+        <!--            v-model="value2"-->
+        <!--            align="right"-->
+        <!--            type="date"-->
+        <!--            placeholder="选择日期"-->
+        <!--            :picker-options="pickerOptions1">-->
+        <!--          </el-date-picker>-->
+        <!--          <el-time-picker-->
+        <!--            v-model="value1"-->
+        <!--            placeholder="请选择一小时之后的日期">-->
+        <!--          </el-time-picker>-->
+        <!--        </div>-->
         <div style="float:right">
           <br><br>
           <el-row>
@@ -52,7 +52,7 @@
             >
               <el-button slot="reference" type="danger" icon="el-icon-delete">删除</el-button>
             </el-popconfirm>
-            <el-button type="success" round>提交</el-button>
+            <el-button type="success" round @click="changecontent">提交</el-button>
           </el-row>
         </div>
       </div>
@@ -100,7 +100,17 @@ export default {
       // }
     }
   },
+  created() {
+    this.default();//需要触发的函数
+  },
   methods: {
+    default() {
+      this.$axios.get('/api/admin/notice')
+        .then(res => {
+          this.textarea = res.data.content;
+          console.log(res.data)
+        })
+    },
     test() {
       // qingkong=0
       this.textarea = ''
@@ -109,13 +119,64 @@ export default {
       // qingkong=0
       this.textarea = 'Welcome To NewBee English!!!'
     },
+    changecontent() {
+      var l;
+      l = this.textarea.length;
+       if(l===0)
+       {
+         this.$confirm('提交空白公告将恢复默认公告', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          let datas = {
+            content: (l ? this.textarea : 'Welcome To NewBee English!!!')
+          }
+          this.$axios({
+            url: '/api/admin/notice', data: datas,
+            method: "post",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(res => {
+              console.log(res)
+            })
+          this.$router.go(0);
+        })
+       }
+       else{
+         this.$confirm('是否修改该公告?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          let datas = {
+            content: (l ? this.textarea : 'Welcome To NewBee English!!!')
+          }
+          this.$axios({
+            url: '/api/admin/notice', data: datas,
+            method: "post",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(res => {
+              console.log(res)
+            })
+          this.$router.go(0);
+        })
+       }
+    }
   }
 
 }
 </script>
 
 <style scoped>
-.title1{
+.title1 {
   margin-bottom: 20px;
 }
 </style>

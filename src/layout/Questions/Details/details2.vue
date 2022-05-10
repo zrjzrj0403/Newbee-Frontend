@@ -170,11 +170,17 @@ export default {
       this.judge = 1;
     },
     confirmit() {
+      this.$confirm('此操作将永久删除题目, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+      .then(() => {
       if (this.judge === 1) {
-        console.log(this.dynamicForm.title);
-        console.log(this.dynamicForm.text);
-        console.log(this.dynamicForm.counter);
-        console.log(this.type);
+        // console.log(this.dynamicForm.title);
+        // console.log(this.dynamicForm.text);
+        // console.log(this.dynamicForm.counter);
+        // console.log(this.type);
         // console.log()
         var i;
         for (i = 0; i < this.dynamicForm.counter.length; i++) {
@@ -204,7 +210,7 @@ export default {
         this.judge = 0;
         this.$router.go(0);
       }
-    },
+    })},
     getfocus() {
       this.thistext = this.dynamicForm.title;
       console.log(this.thistext)

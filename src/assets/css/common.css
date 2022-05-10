@@ -59,7 +59,17 @@ body{
   height: 30px;
   padding-top:  15px;
 }
-
+html, body {
+  height: 100%;
+  overflow: auto;
+  margin: 0;
+}
+html{
+  overflow-y: auto;
+}
+.el-notification {
+  white-space: pre-wrap !important;
+}
 .el-form-item__label{
   font-size: 13px;
 }

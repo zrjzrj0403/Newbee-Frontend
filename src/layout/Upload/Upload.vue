@@ -41,14 +41,16 @@
     <div v-if="step === 1">
       <el-form ref="dynamicForm" :model="dynamicForm" label-width="80px" size="mini" prop="dynamicForm">
         <div class="form" v-for="(item, index) in dynamicForm.counter">
-          <el-form-item label="子题目标题" v-if="question.type!== 'cloze_question'" :prop="'counter.' + index + '.stem'"
+          <el-form-item :label="'第'+(index+1)+'小题标题'" v-if="question.type!== 'cloze_question'"
+                        :prop="'counter.' + index + '.stem'"
                         :rules="rules2.stem">
             <el-input v-model="item.stem" type="textarea" rows="2"></el-input>
           </el-form-item>
-          <el-form-item label="子题目选项" :prop="'counter.' + index + '.option'" :rules="rules2.option">
-            <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)" :placeholder="'请输入形如'+'\nA.xxx'+'\nB.xxx'+'\nC.xxx'+ '\nD.xxx'+'\n的4个选项'+'\nps:为了保证录入文章的真实性，请不要在英文选项里出现中文字符'"></el-input>
+          <el-form-item :label="'第'+(index+1)+'小题选项'" :prop="'counter.' + index + '.option'" :rules="rules2.option">
+            <el-input v-model="item.option" type="textarea" rows="8" @change="changeit($event,index)"
+                      :placeholder="'请输入形如'+'\nA.xxx'+'\nB.xxx'+'\nC.xxx'+ '\nD.xxx'+'\n的4个选项'+'\nps:为了保证录入文章的真实性，请不要在英文选项里出现中文字符'"></el-input>
           </el-form-item>
-          <el-form-item label="子题目答案" :prop="'counter.' + index + '.answer'" :rules="rules2.answer">
+          <el-form-item :label="'第'+(index+1)+'小题答案'" :prop="'counter.' + index + '.answer'" :rules="rules2.answer">
             <el-select v-model="item.answer" placeholder="请选择子题目答案">
               <el-option label="A" value="A"></el-option>
               <el-option label="B" value="B"></el-option>
@@ -131,7 +133,8 @@
             <el-input v-show="edit" v-model="question.text" type="textarea" autosize></el-input>
           </el-form-item>
           <div v-for="(item, index) in this.question.subque">
-            <el-form-item v-show="edit&&question.type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'" :prop="'subque.' + index + '.stem'"
+            <el-form-item v-show="edit&&question.type!=='cloze_question'" :label="'第'+(index+1)+'小题标题'"
+                          :prop="'subque.' + index + '.stem'"
                           :rules="rule3.stem">
               <el-input v-show="edit" v-model="item.stem" type="textarea" autosize
                         @change="onChange(3+(index)*5,$event)"></el-input>
@@ -169,10 +172,10 @@
           <el-button class='button' type="primary" @click="upStep">上一步</el-button>
           <el-button class='button' type="success" @click="changeStrp2">确定提交</el-button>
           <el-button class='button' type="primary" @click="edit = !edit">编辑</el-button>
-<!--          <i-->
-<!--            :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
-<!--            @click="edit = !edit"-->
-<!--          ></i>-->
+          <!--          <i-->
+          <!--            :class="{'el-icon-edit': !edit, 'el-icon-check': edit}"-->
+          <!--            @click="edit = !edit"-->
+          <!--          ></i>-->
         </el-form>
       </div>
     </div>
@@ -259,6 +262,13 @@ export default {
     },
     changeStrp() {
       if (this.step === 0) {
+        this.$notify({
+          title: '提示',
+          customClass: "stylecss1",//自定义类名
+          message: "在子题目选择中请输入形如\nA.xxx\nB.xxx\nC.xxx\nD.xxx的四个选项\n为保证文章的真实性，请不要在英文选项里输入中文符号",
+          duration: 0,
+          type: 'warning'
+        });
         this.$refs.question.validate(valid => {
           if (valid) {
             var sub_que_num, title, text, type;
@@ -317,21 +327,38 @@ export default {
       }
     },
     changeStrp2() {
-      let datas = {
-        type: this.question.type,
-        text: this.question.text,
-        title: this.question.title,
-        sub_que_num: this.question.sub_que_num,
-        sub_que: this.question.subque
-      }
-      this.$axios({
-        url: '/api/admin/designated_question', data: datas,
-        method: "post",
-        headers: {
-          'Content-Type': 'application/json'
-        }
+      this.$confirm('是否添加该题目?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-      this.$router.go(0);
+        .then(() => {
+          let datas = {
+            type: this.question.type,
+            text: this.question.text,
+            title: this.question.title,
+            sub_que_num: this.question.sub_que_num,
+            sub_que: this.question.subque
+          }
+          this.$axios({
+            url: '/api/admin/designated_question', data: datas,
+            method: "post",
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(res => {
+              if (res.data.ret === 0) {
+                this.$message({
+                  message: '成功添加该题',
+                  type: 'success'
+                });
+              } else {
+                this.$message.error('添加该题失败');
+              }
+            })
+          this.$router.go(0);
+        })
     },
     onSubmit() {
       console.log('submit!');
@@ -383,5 +410,9 @@ export default {
 
 .text2 {
   font-size: 16px;
+}
+
+/deep/ .el-notification {
+  white-space: pre-wrap !important;
 }
 </style>
