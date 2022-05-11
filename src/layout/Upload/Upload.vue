@@ -66,13 +66,13 @@
     <div>
       <div v-if="step === 2">
         <div class="display">
-          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+          <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox text-wrapper">
             <h1 style="text-align: center">{{ question.title }}</h1>
           </div>
           <div v-show="!edit" class="information">
             <el-collapse v-model="activeNames">
               <el-collapse-item name="1" v-show="question.type!=='choice_question'">
-                <span class="collapse-title" slot="title">题目正文</span>
+                <span class="collapse-title text-wrapper" slot="title">题目正文</span>
                 <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
                   <p>{{ question.text }}</p>
                 </div>
@@ -94,19 +94,19 @@
                   <span class="collapse-title" slot="title">第{{ index + 1 }}小题信息</span>
                   <div v-show="!edit&&question.type!=='cloze_question'" v-model="item.stem"
                        style="white-space: pre-wrap;"
-                       class="text textbox sub_title">
+                       class="text textbox sub_title text-wrapper">
                     {{ index + 1 }}.{{ item.stem }}
                   </div>
-                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox">
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[0]" class="text textbox text-wrapper">
                     A.{{ item.options[0] }}
                   </div>
-                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox">
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[1]" class="text textbox text-wrapper">
                     B.{{ item.options[1] }}
                   </div>
-                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox">
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[2]" class="text textbox text-wrapper">
                     C.{{ item.options[2] }}
                   </div>
-                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox">
+                  <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.options[3]" class="text textbox text-wrapper">
                     D.{{ item.options[3] }}
                   </div>
                   <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text">

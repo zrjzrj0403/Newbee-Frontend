@@ -75,7 +75,7 @@
         <el-col :span="16">
           <el-card class="card1" style=" height:480px" shadow="hover"
                    :style="{height: scrollerHeight5}">
-            <h1>管理员操作列表</h1>
+            <h2>管理员操作列表</h2>
             <el-table
               :data="tableData"
               style="width: 100%;padding-top: 10px">
@@ -90,6 +90,7 @@
                 width="200">
               </el-table-column>
               <el-table-column
+                :show-overflow-tooltip="true"
                 prop="description"
                 label="操作对象">
               </el-table-column>
@@ -160,7 +161,7 @@ export default {
               normal: {
                 length: 10,     // 指示线宽度
                 lineStyle: {
-                  color: "#135ae7",  // 指示线颜色
+                  color: "#546ed0",  // 指示线颜色
                   width: 5,
                 }
               },
@@ -179,12 +180,12 @@ export default {
             data: [],
             itemStyle: {
               color: {
-                image: require('../../assets/logo最终版1.jpg'),
+                image: require('../../assets/logo最终版2.jpg'),
                 wight: '100px',
                 repeat: 'repeat'
               },
               borderWidth: 3,
-              borderColor: '#3a5bde'
+              borderColor: '#546ed0'
             },
             emphasis: {
               itemStyle: {

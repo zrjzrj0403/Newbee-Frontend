@@ -20,14 +20,14 @@
     </div>
     <div>
       <div class="display" v-show="!edit">
-        <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox title">
-          <h1 style="text-align: center">{{ dynamicForm.title }}</h1>
-        </div>
+          <div  v-show="!edit" style="white-space: pre-wrap;" class="text textbox title text-wrapper">
+            <h1 style="text-align: center" >{{ dynamicForm.title }}</h1>
+          </div>
         <div class="information">
           <el-collapse v-model="activeNames">
             <el-collapse-item name="1" v-show="type!=='choice_question'">
               <span class="collapse-title" slot="title">题目正文</span>
-              <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox">
+              <div v-show="!edit" style="white-space: pre-wrap;" class="text textbox text-wrapper">
                 <p>{{ dynamicForm.text }}</p>
               </div>
             </el-collapse-item>
@@ -42,22 +42,22 @@
                   </el-button>
                 </div>
                 <div v-show="!edit&&type!=='cloze_question'" v-model="item.stem" style="white-space: pre-wrap;"
-                     class="text textbox sub_title">
+                     class="text textbox sub_title text-wrapper">
                   {{ index + 1 }}.{{ item.stem }}
                 </div>
-                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionA" class="text textbox">
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionA" class="text textbox text-wrapper">
                   A.{{ item.optionA }}
                 </div>
-                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionB" class="text textbox">
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionB" class="text textbox text-wrapper">
                   B.{{ item.optionB }}
                 </div>
-                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionC" class="text textbox">
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionC" class="text textbox text-wrapper">
                   C.{{ item.optionC }}
                 </div>
-                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionD" class="text textbox">
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.optionD" class="text textbox text-wrapper">
                   D.{{ item.optionD }}
                 </div>
-                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text">
+                <div v-show="!edit" style="white-space: pre-wrap;" v-model="item.answer" class="text text-wrapper">
                   答案为：{{ item.answer }}
                 </div>
               </el-collapse-item>
@@ -130,29 +130,32 @@
       <div class="sublote">
         <div class="good">
           <h1>需要处理的题解</h1>
-            <el-table :data="badDate" :row-class-name="tableRowClassName">
-          <el-table-column property="content" label="题解内容"></el-table-column>
-          <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
-          <el-table-column property="reports" label="举报数" width="80"></el-table-column>
-          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理" width="80"></el-table-column>
-          <el-table-column prop="operate" label="操作" width="160">
-            <template slot-scope="scope">
-              <el-button size="mini" :disabled="scope.row.approved === 1"  type="success" @click="approved(scope.$index, scope.row) "
-              >认可
-              </el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
-              >删除
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+          <el-table :data="badDate" :row-class-name="tableRowClassName">
+            <el-table-column property="content" label="题解内容"></el-table-column>
+            <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
+            <el-table-column property="reports" label="举报数" width="80"></el-table-column>
+            <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理"
+                             width="80"></el-table-column>
+            <el-table-column prop="operate" label="操作" width="160">
+              <template slot-scope="scope">
+                <el-button size="mini" :disabled="scope.row.approved === 1" type="success"
+                           @click="approved(scope.$index, scope.row) "
+                >认可
+                </el-button>
+                <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-         <h1>暂不处理的题解</h1>
+        <h1>暂不处理的题解</h1>
         <el-table :data="goodDate" :row-class-name="tableRowClassName">
           <el-table-column property="content" label="题解内容"></el-table-column>
           <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
           <el-table-column property="reports" label="举报数" width="80"></el-table-column>
-          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理" width="80"></el-table-column>
+          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理"
+                           width="80"></el-table-column>
           <el-table-column prop="operate" label="操作" width="80">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
@@ -164,7 +167,7 @@
       </div>
     </el-drawer>
     <div class="sub">
-<!--      <el-button type="text" @click="dialogTableVisible = true"></el-button>-->
+      <!--      <el-button type="text" @click="dialogTableVisible = true"></el-button>-->
       <el-dialog class="dialog-vertica" width="50%" :modal=false :before-close="handleClosedi"
                  :visible.sync="dialogTableVisible">
          <span slot="title">
@@ -218,7 +221,7 @@ export default {
       item2: '11',
       paths: '',
       goodDate: [],
-      badDate:[],
+      badDate: [],
       judge: 0,
       item: '',
       textarea: 666,
@@ -255,21 +258,21 @@ export default {
     // this.addInput();
   },
   methods: {
-    approved(index, row){
-        let datas = {
-            solution_id: row.id,
-          }
-          this.$axios({
-            url: '/api/admin/solution', data: datas,
-            method: "post",
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-       this.$router.go(0);
+    approved(index, row) {
+      let datas = {
+        solution_id: row.id,
+      }
+      this.$axios({
+        url: '/api/admin/solution', data: datas,
+        method: "post",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      this.$router.go(0);
     },
-     FunctionStatus(row, column){
-       return row.bad_solution== '1' ? "是" : row.bad_solution== '0' ? "否" : "暂无";
+    FunctionStatus(row, column) {
+      return row.bad_solution == '1' ? "是" : row.bad_solution == '0' ? "否" : "暂无";
     },
     tableRowClassName({row, rowIndex}) {
       if (row.bad_solution === 1) {
@@ -324,30 +327,29 @@ export default {
       this.soluteid = index + 1;
       this.soluteid2 = index;
       var i;
-      this.goodDate.length=0;
-      this.badDate.length=0;
+      this.goodDate.length = 0;
+      this.badDate.length = 0;
       this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
         .then(res => {
           console.log(res.data.solutions);
-                  this.dialogTableVisible = true;
+          this.dialogTableVisible = true;
           for (i = 0; i < res.data.solutions.length; i++) {
             if (res.data.solutions[i].bad_solution === 1) {
               this.badDate.push({
-                approved:res.data.solutions[i].approved,
-                bad_solution:res.data.solutions[i].bad_solution,
-                content:res.data.solutions[i].content,
-                id:res.data.solutions[i].id,
-                likes:res.data.solutions[i].likes,
-                reports:res.data.solutions[i].reports,
+                approved: res.data.solutions[i].approved,
+                bad_solution: res.data.solutions[i].bad_solution,
+                content: res.data.solutions[i].content,
+                id: res.data.solutions[i].id,
+                likes: res.data.solutions[i].likes,
+                reports: res.data.solutions[i].reports,
               })
-            }
-               else{
+            } else {
               this.goodDate.push({
-                bad_solution:res.data.solutions[i].bad_solution,
-                content:res.data.solutions[i].content,
-                id:res.data.solutions[i].id,
-                likes:res.data.solutions[i].likes,
-                reports:res.data.solutions[i].reports,
+                bad_solution: res.data.solutions[i].bad_solution,
+                content: res.data.solutions[i].content,
+                id: res.data.solutions[i].id,
+                likes: res.data.solutions[i].likes,
+                reports: res.data.solutions[i].reports,
               })
             }
           }
@@ -374,49 +376,51 @@ export default {
     }
     ,
     confirmit() {
-        if (this.judge === 1) {
+      if (this.judge === 1) {
         this.$confirm('是否确认编辑该题目?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         })
-      .then(() => {
+          .then(() => {
 
-        // console.log(this.dynamicForm.title);
-        // console.log(this.dynamicForm.text);
-        // console.log(this.dynamicForm.counter);
-        // console.log(this.type);
-        // console.log()
-        var i;
-        for (i = 0; i < this.dynamicForm.counter.length; i++) {
-          this.dynamicForm.sub_que.push({
-            answer: this.dynamicForm.counter[i].answer,
-            stem: this.dynamicForm.counter[i].stem,
-            id: this.dynamicForm.counter[i].id,
-            has_bad_solution: this.dynamicForm.counter[i].has_bad_solution,
-            number: this.dynamicForm.counter[i].number,
-            options: [this.dynamicForm.counter[i].optionA, this.dynamicForm.counter[i].optionB, this.dynamicForm.counter[i].optionC, this.dynamicForm.counter[i].optionD],
+            // console.log(this.dynamicForm.title);
+            // console.log(this.dynamicForm.text);
+            // console.log(this.dynamicForm.counter);
+            // console.log(this.type);
+            // console.log()
+            var i;
+            for (i = 0; i < this.dynamicForm.counter.length; i++) {
+              this.dynamicForm.sub_que.push({
+                answer: this.dynamicForm.counter[i].answer,
+                stem: this.dynamicForm.counter[i].stem,
+                id: this.dynamicForm.counter[i].id,
+                has_bad_solution: this.dynamicForm.counter[i].has_bad_solution,
+                number: this.dynamicForm.counter[i].number,
+                options: [this.dynamicForm.counter[i].optionA, this.dynamicForm.counter[i].optionB, this.dynamicForm.counter[i].optionC, this.dynamicForm.counter[i].optionD],
+              })
+            }
+            let datas = {
+              problemid: this.id,
+              type: this.type,
+              text: this.dynamicForm.text,
+              title: this.dynamicForm.title,
+
+              sub_que_num: this.sub_que_num,
+              sub_que: this.dynamicForm.sub_que,
+            }
+            this.$axios({
+              url: '/api/admin/designated_question', data: datas,
+              method: "put",
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            this.judge = 0;
+            this.$router.go(0);
           })
-        }
-        let datas = {
-          problemid: this.id,
-          type: this.type,
-          text: this.dynamicForm.text,
-          title: this.dynamicForm.title,
-
-          sub_que_num: this.sub_que_num,
-          sub_que: this.dynamicForm.sub_que,
-        }
-        this.$axios({
-          url: '/api/admin/designated_question', data: datas,
-          method: "put",
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        this.judge = 0;
-        this.$router.go(0);
-    })}}
+      }
+    }
     ,
     getfocus() {
       this.thistext = this.dynamicForm.title;
@@ -528,8 +532,8 @@ export default {
 }
 
 .confirm {
-  position: absolute;
-  right: 5%;
+float:right;
+  margin-right: 5%;
 }
 
 .button {
@@ -553,8 +557,8 @@ export default {
 }
 
 .button2 {
-  position: absolute;
-  right: 5%;
+  float:right;
+  margin-right: 3%;
 }
 
 .sublote {
@@ -562,7 +566,8 @@ export default {
   margin-right: 5%;
   margin-bottom: 5%;
 }
-.good{
+
+.good {
   margin-bottom: 5%;
 }
 
@@ -592,6 +597,7 @@ export default {
 /deep/ .el-table .warning-row {
   background: #ffb3a7;
 }
+
 
 .ifo {
   position: absolute;

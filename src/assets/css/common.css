@@ -1,75 +1,102 @@
-.header{
+.header {
   text-align: center;
   background-color: #dcdcdc;
 }
-*{
-   padding: 0;
-         /*外部间距也是如此设置*/
-        margin: 0;
+
+* {
+  padding: 0;
+  /*外部间距也是如此设置*/
+  margin: 0;
 }
-.h-6{
+
+.h-6 {
   height: 60px;
   line-height: 60px;
 }
-.text-center{
+
+.text-center {
   text-align: center;
 }
-.m-auto{
+
+.m-auto {
   margin: auto;
 }
-.w-25{
+
+.w-25 {
   width: 25%;
 }
-.set{
+
+.set {
   margin: 0;
 }
-.bcg{
+
+.bcg {
   background: url("../../../bcg.jpg");
   background-position: center;
-    height: 100%;
-    width: 100%;
-    background-size: cover;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
 
 }
-html,body,#app,.el-container{
-        /*设置内部填充为0，几个布局元素之间没有间距*/
-        padding: 0px;
-         /*外部间距也是如此设置*/
-        margin: 0px;
-        /*统一设置高度为100%*/
-        height: 100%;
-    }
-.transparent{
-opacity: 0.8;
+
+html, body, #app, .el-container {
+  /*设置内部填充为0，几个布局元素之间没有间距*/
+  padding: 0px;
+  /*外部间距也是如此设置*/
+  margin: 0px;
+  /*统一设置高度为100%*/
+  height: 100%;
 }
+
+.transparent {
+  opacity: 0.8;
+}
+
 /*/deep/ .el-notification{*/
 /*  background-color: #ffb3a7;*/
 /*  border: 1px solid #ffb3a7;*/
 /*}*/
-#opaque{
-  opacity:1.0;
+#opaque {
+  opacity: 1.0;
 }
-body{
-  font-family: '微软雅黑','Arial Black', Arial,serif;
+
+body {
+  font-family: '微软雅黑', 'Arial Black', Arial, serif;
   font-size: 14px;
   background: #f5f5f5;
 }
-.title1{
+
+.title1 {
   background-color: #8c939d;
   height: 30px;
-  padding-top:  15px;
+  padding-top: 15px;
 }
+
 html, body {
   height: 100%;
   overflow: auto;
   margin: 0;
 }
-html{
+
+html {
   overflow-y: auto;
 }
+
+.el-tooltip__popper {
+  font-size: 14px;
+  max-width: 40%
+}
+
+.text-wrapper {
+  word-break: break-all;
+  word-wrap: break-word
+}
+
+/* 设置显示隐藏部分内容，按40%显示 */
 .el-notification {
   white-space: pre-wrap !important;
 }
-.el-form-item__label{
+
+.el-form-item__label {
   font-size: 13px;
 }
