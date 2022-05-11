@@ -3,7 +3,7 @@
   <div class="contentheader">
     <i v-if='!isCollapse' @click="changeMenu" class="iconfont el-icon-s-fold"></i>
     <i v-else  @click="changeMenu" class="iconfont el-icon-s-unfold"></i>
-    顶部区域
+    Welcome To New Bee English!!!
     <span class='dengchu' @click="logout">
       <i class="iconfont el-icon-switch-button"></i>
     </span>
