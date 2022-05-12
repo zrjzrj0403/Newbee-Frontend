@@ -18,11 +18,26 @@
         <el-table border :data="tableData" @sort-change="sortChange" style="width: 100%"
                   @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column prop="name" label="用户名称" width="180"></el-table-column>
-          <el-table-column prop="id" label="用户id" width="180"></el-table-column>
-          <el-table-column prop="numm" sortable="custom" label="单选数量" width="180"></el-table-column>
-          <el-table-column prop="numc" label="完型数量" sortable="custom" width="180"></el-table-column>
-          <el-table-column prop="numr" label="阅读数量" sortable="custom" width="180"></el-table-column>
+          <el-table-column prop="name" label="用户名称" width="160">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top">
+                <p>姓名: {{ scope.row.name }}</p>
+                <p>完型正确率: {{ (scope.row.cloze_rate) + "%" }}</p>
+                <p>选择正确率: {{ (scope.row.m_rate) + "%" }}</p>
+                <p>阅读正确率: {{ (scope.row.read_rate)+ "%" }}</p>
+                <div slot="reference" class="name-wrapper">
+                  <div >{{ scope.row.name }}</div>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column prop="id" label="用户id" width="160"></el-table-column>
+          <el-table-column prop="numm" sortable="custom" label="做过的单选数量" width="160"></el-table-column>
+          <el-table-column prop="right_choice_que" label="做对的单选数量" width="160"></el-table-column>
+          <el-table-column prop="numc" label="做过的完型数量" sortable="custom" width="160"></el-table-column>
+          <el-table-column prop="right_cloze_que" label="做对的完型数量" width="160"></el-table-column>
+          <el-table-column prop="numr" label="做过的阅读数量" sortable="custom" width="160"></el-table-column>
+          <el-table-column prop="right_reading_que" label="做对的阅读数量" width="160"></el-table-column>
           <el-table-column prop="operate" label="操作">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
@@ -50,7 +65,7 @@ export default {
   data() {
     return {
       tabSort: 0, //该字段代表升序还是降序 假设：0正序 1倒序
-      tabProp: '',//prop绑定的字段名
+      tabProp: "numc",//prop绑定的字段名
       input: '',
       tableData: [],
       tableChecked: [],
@@ -61,14 +76,38 @@ export default {
       type: 1,
       num: 1,
       val: '',
-      column2:''
+      column2: ''
+    }
+  },
+  filters: {
+    numFilter: function (value) {
+
+      // 截取当前数据到小数点后两位
+
+      let realVal = parseFloat(value).toFixed(2)
+
+      // num.toFixed(2)获取的是字符串
+
+      return realVal
+
     }
   },
   created() {
-    this.get_information(this.tabSort,this.tabProp,1);//需要触发的函数
+    this.get_information(this.tabSort, this.tabProp, 1);//需要触发的函数
   },
   methods: {
-    sortChange(column,num) {
+    //     numFilter(value) {
+    //
+    // // 截取当前数据到小数点后两位
+    //
+    //   let realVal = parseFloat(value).toFixed(2)
+    //
+    //   // num.toFixed(2)获取的是字符串
+    //
+    //   return realVal
+    //
+    // },
+    sortChange(column, num) {
 
       if (column.order === "ascending") {
         this.tabSort = 1
@@ -78,7 +117,7 @@ export default {
         this.tabSort = 0
       }
       this.tabProp = column.prop
-      this.get_information(this.tabSort,this.tabProp ,1)
+      this.get_information(this.tabSort, this.tabProp, 1)
     },
 
     // 搜索查询数据
@@ -185,16 +224,39 @@ export default {
           });
         });
     },
-    get_information(tabSort,tabProp,pagenumber) {
+    get_information(tabSort, tabProp, pagenumber) {
       console.log(tabSort);
       console.log(tabProp);
-      this.$axios.get('/api/admin/list_user', {params: {pagenumber: pagenumber, pagesize: 12}})
+      this.$axios.get('/api/admin/list_user', {
+        params: {
+          pagenumber: pagenumber,
+          pagesize: 12,
+          sorttype: tabSort,
+          sortname: tabProp,
+        }
+      })
         .then(res => {
           console.log(res)
           if (res.data.ret === 0) {
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
             // console.log(res.data)
-            this.tableData = res.data.list;
+            var i;
+            for (i = 0; i < res.data.list.length; i++) {
+              this.tableData.push({
+                  id: res.data.list[i].id,
+                  name: res.data.list[i].name,
+                  numc: res.data.list[i].numc,
+                  numm: res.data.list[i].numm,
+                  numr: res.data.list[i].numr,
+                  right_choice_que: res.data.list[i].right_choice_que,
+                  right_cloze_que: res.data.list[i].right_cloze_que,
+                  right_reading_que: res.data.list[i].right_reading_que,
+                  cloze_rate:(res.data.list[i].right_cloze_que/res.data.list[i].numc*100).toFixed(1),
+                read_rate:(res.data.list[i].right_reading_que/res.data.list[i].numr*100).toFixed(1),
+                m_rate:(res.data.list[i].right_choice_que/res.data.list[i].numm*100).toFixed(1),
+                })
+            }
+            // this.tableData = res.data.list;
             this.total = res.data.total;
             // console.log(res)
           }
@@ -203,7 +265,7 @@ export default {
     // 分页页码
     changePage(num) {
       if (this.type === 1) {
-        this.get_information(this.tabSort,this.tabProp,num)
+        this.get_information(this.tabSort, this.tabProp, num)
       } else {
 
         this.searchinput(this.val, num)

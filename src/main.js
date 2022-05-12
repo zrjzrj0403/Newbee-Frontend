@@ -19,7 +19,11 @@ Vue.prototype.$axios=axios
 Vue.prototype.$qs=qs
 Vue.use(ElementUI);
 Vue.component('e-charts', ECharts)
-
+// import * as filters from './filters' // global filters
+//
+// Object.keys(filters).forEach(key => {
+//   Vue.filter(key, filters[key])
+// })
 
 /* eslint-disable no-new */
 new Vue({

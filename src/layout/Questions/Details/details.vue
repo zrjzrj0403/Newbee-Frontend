@@ -361,6 +361,7 @@ export default {
       this.$confirm('确认关闭题解信息？')
         .then(_ => {
            done();
+           this.msg = "关闭题目信息";
           this.dialogTableVisible = false;
         })
         .catch(_ => {
