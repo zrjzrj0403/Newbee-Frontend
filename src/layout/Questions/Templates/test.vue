@@ -1,7 +1,7 @@
 <template>
   <div class="total">
   <div class="title1">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb style="margin-left: 1%" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home3' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: this.$route.path}">题目管理</el-breadcrumb-item>
       <el-breadcrumb-item>{{item}}</el-breadcrumb-item>

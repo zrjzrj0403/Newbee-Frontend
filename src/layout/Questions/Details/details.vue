@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="title1">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb style="margin-left: 1%" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/home3' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: this.$route.path}">题目管理</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{path:paths}">题目管理</el-breadcrumb-item>
         <el-breadcrumb-item :to="{path:paths}">{{ item }}</el-breadcrumb-item>
         <el-breadcrumb-item>题目详情</el-breadcrumb-item>
       </el-breadcrumb>
@@ -293,6 +293,7 @@ export default {
       this.$confirm('确认关闭该小题信息展示框？')
         .then(_ => {
           done();
+          this.msg="查看题目信息";
         })
         .catch(_ => {
         });
@@ -334,7 +335,7 @@ export default {
           console.log(res.data.solutions);
           this.dialogTableVisible = true;
           for (i = 0; i < res.data.solutions.length; i++) {
-            if (res.data.solutions[i].bad_solution === 1) {
+            if (res.data.solutions[i].bad_solution === 1&&res.data.solutions[i].approved===0) {
               this.badDate.push({
                 approved: res.data.solutions[i].approved,
                 bad_solution: res.data.solutions[i].bad_solution,
@@ -359,7 +360,7 @@ export default {
     handleClosedr(done) {
       this.$confirm('确认关闭题解信息？')
         .then(_ => {
-          done();
+           done();
           this.dialogTableVisible = false;
         })
         .catch(_ => {

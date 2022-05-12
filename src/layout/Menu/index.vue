@@ -32,7 +32,8 @@ import Content from "./Content";
   .menu{
     /*width: 200px;*/
     /*min-height: 500px;*/
-    background-color: #314158;
+    /*background-color: #314158;*/
+    background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)!important;
     position: fixed;
     top:0;
     bottom: 0;

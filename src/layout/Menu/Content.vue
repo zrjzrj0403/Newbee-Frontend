@@ -71,7 +71,11 @@ export default {
 .contentheader {
   height: 50px;
   line-height: 50px;
-  background-color: #314158;
+  /*background-color: #314158;*/
+    /*background-image: linear-gradient(red, yellow);*/
+    /*background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);*/
+    background-image: linear-gradient(-20deg, #3d4e76 0%, #4e4376 100%);
+  /*background-image: linear-gradient(-20deg, #3d4e76 0%, #484676 100%);*/
   color: #fff;
 }
   .iconfont{

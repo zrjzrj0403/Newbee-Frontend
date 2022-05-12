@@ -136,7 +136,7 @@ export default {
             .then(res => {
               console.log(res);
               if (res.data.ret === 0) {
-                this.$router.push('/home3/')
+                this.$router.push('/home3')
                 // console.log(res)
               } else {
                 this.$alert('用户名或密码不正确，请重新输入')
