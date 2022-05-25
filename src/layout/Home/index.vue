@@ -282,10 +282,7 @@ export default {
               fontSize: '20',
               position: 'top'
             },
-            data: [{value: '220', code: '小赵'}, {value: '191', code: '小李'}, {value: '182', code: '小姜'}, {
-              value: '172',
-              code: '小徐'
-            }, {value: '160', code: '小LD'}]
+            data: []
           },
           {
             name: '完形填空',
@@ -300,10 +297,7 @@ export default {
               fontSize: '20',
               position: 'top'
             },
-            data: [{value: '320', code: '小李'}, {value: '300', code: '小赵'}, {value: '250', code: '小姜'}, {
-              value: '201',
-              code: '小徐'
-            }, {value: '150', code: '小LD'}]
+            data: []
           },
           {
             name: '阅读理解',
@@ -318,10 +312,7 @@ export default {
               fontSize: '20',
               position: 'top'
             },
-            data: [{value: '234', code: '小姜'}, {value: '231', code: '小徐'}, {value: '180', code: '小LD'}, {
-              value: '177',
-              code: '小赵'
-            }, {value: '165', code: '小李'}]
+            data: []
           },
         ]
       },
@@ -469,18 +460,34 @@ export default {
       //     this.tableData = res.data.tableData
       // })
     },
-    fuzhi() {
-      this.optiontu.series[0].data = [{value: 1048, name: '单项选择'},
-        {value: 735, name: '完形填空'},
-        {value: 580, name: '阅读理解'},]
+    // fuzhi() {
+    //   this.optiontu.series[0].data = [{value: 1048, name: '单项选择'},
+    //     {value: 735, name: '完形填空'},
+    //     {value: 580, name: '阅读理解'},]
+    // },
+    get_graph(){
+        this.$axios.get('/api/admin/graph')
+        .then(res => {
+          if (res.data.ret === 0) {
+            this.questionnumber=res.data.questionnumber;
+            this.usernumber=res.data.usernumber;
+            this.bad_solution_number=res.data.bad_solution_number;
+          }
+          this.optiontu.series[0].data =res.data.questions_number;
+          this.option.series[0].data=res.data.choice_question_top5;
+          this.option.series[1].data=res.data.reading_question_top5;
+            this.option.series[2].data=res.data.cloze_question_top5;
+          console.log(res.data)
+        })
     }
   },
   //一进组件就会去请求后端接口 获取首页数据
   created() {
     this.get_op_record(1);
+    this.get_graph();
     this.setit();
     this.getit();
-    this.fuzhi();
+    // this.fuzhi();
     // this.getTableData()
   }
 }

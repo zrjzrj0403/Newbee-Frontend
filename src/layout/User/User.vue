@@ -236,6 +236,7 @@ export default {
         }
       })
         .then(res => {
+           this.tableData.length=0;
           console.log(res)
           if (res.data.ret === 0) {
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
