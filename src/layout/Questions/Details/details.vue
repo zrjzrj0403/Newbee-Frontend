@@ -132,11 +132,10 @@
           <h1>需要处理的题解</h1>
           <el-table :data="badDate" :row-class-name="tableRowClassName">
             <el-table-column property="content" label="题解内容"></el-table-column>
-            <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
-            <el-table-column property="reports" label="举报数" width="80"></el-table-column>
-            <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理"
-                             width="80"></el-table-column>
-            <el-table-column prop="operate" label="操作" width="160">
+            <el-table-column property="author_username" label="创作者" width="70"></el-table-column>
+            <el-table-column property="likes" label="点赞数" width="70"></el-table-column>
+            <el-table-column property="reports" label="举报数" width="70"></el-table-column>
+            <el-table-column prop="operate" label="操作" width="150">
               <template slot-scope="scope">
                 <el-button size="mini" :disabled="scope.row.approved === 1" type="success"
                            @click="approved(scope.$index, scope.row) "
@@ -152,10 +151,9 @@
         <h1>暂不处理的题解</h1>
         <el-table :data="goodDate" :row-class-name="tableRowClassName">
           <el-table-column property="content" label="题解内容"></el-table-column>
+            <el-table-column property="author_username" label="创作者" width="80"></el-table-column>
           <el-table-column property="likes" label="点赞数" width="80"></el-table-column>
           <el-table-column property="reports" label="举报数" width="80"></el-table-column>
-          <el-table-column property="bad_solution" :formatter="FunctionStatus" label="需要管理"
-                           width="80"></el-table-column>
           <el-table-column prop="operate" label="操作" width="80">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)"
@@ -332,11 +330,12 @@ export default {
       this.badDate.length = 0;
       this.$axios.get('/api/admin/solution', {params: {sub_question_id: thisid}})
         .then(res => {
-          console.log(res.data.solutions);
+          console.log(res.data.solutions[0].author_username);
           this.dialogTableVisible = true;
           for (i = 0; i < res.data.solutions.length; i++) {
             if (res.data.solutions[i].bad_solution === 1&&res.data.solutions[i].approved===0) {
               this.badDate.push({
+                author_username:res.data.solutions[i].author_username,
                 approved: res.data.solutions[i].approved,
                 bad_solution: res.data.solutions[i].bad_solution,
                 content: res.data.solutions[i].content,
@@ -346,6 +345,7 @@ export default {
               })
             } else {
               this.goodDate.push({
+                author_username:res.data.solutions[i].author_username,
                 bad_solution: res.data.solutions[i].bad_solution,
                 content: res.data.solutions[i].content,
                 id: res.data.solutions[i].id,
