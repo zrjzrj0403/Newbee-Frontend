@@ -199,7 +199,7 @@ export default {
       },
       option: {
         title: {
-          text: "特此表彰，选择题做对数量前五名",
+          text: "特此表彰，做过题目数量的前五名同学",
           subtext: "请在每周日发送表彰公告\n"
         },
         legend: {
@@ -475,8 +475,8 @@ export default {
           }
           this.optiontu.series[0].data =res.data.questions_number;
           this.option.series[0].data=res.data.choice_question_top5;
-          this.option.series[1].data=res.data.reading_question_top5;
-            this.option.series[2].data=res.data.cloze_question_top5;
+          this.option.series[1].data=res.data.cloze_question_top5;
+            this.option.series[2].data=res.data.reading_question_top5;
           console.log(res.data)
         })
     }
