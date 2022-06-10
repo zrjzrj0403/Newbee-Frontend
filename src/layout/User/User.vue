@@ -9,8 +9,9 @@
     <div class="user">
       <!--    搜索区域-->
       <div class="userheader">
-        <el-input @keyup.enter.native="searchinput(input,num)" v-model="input" placeholder="请输入内容"></el-input>
-        <el-button @click="searchinput(input,num)" type="primary">查询</el-button>
+        <el-input @keyup.enter.native="get_information(0,'numc',1,input)" v-model="input"
+                  placeholder="请输入内容"></el-input>
+        <el-button @click="get_information(0,'numc',1,input)" type="primary">查询</el-button>
         <el-button type="primary" @click="batchDelete(tableChecked)">批量删除</el-button>
       </div>
       <!--  2.表格区域 展示视图数据-->
@@ -24,9 +25,9 @@
                 <p>姓名: {{ scope.row.name }}</p>
                 <p>完型正确率: {{ (scope.row.cloze_rate) + "%" }}</p>
                 <p>选择正确率: {{ (scope.row.m_rate) + "%" }}</p>
-                <p>阅读正确率: {{ (scope.row.read_rate)+ "%" }}</p>
+                <p>阅读正确率: {{ (scope.row.read_rate) + "%" }}</p>
                 <div slot="reference" class="name-wrapper">
-                  <div >{{ scope.row.name }}</div>
+                  <div>{{ scope.row.name }}</div>
                 </div>
               </el-popover>
             </template>
@@ -73,6 +74,7 @@ export default {
       total: 10,
       pageSize: 12,
       page: 1,
+      str: '',
       type: 1,
       num: 1,
       val: '',
@@ -93,7 +95,7 @@ export default {
     }
   },
   created() {
-    this.get_information(this.tabSort, this.tabProp, 1);//需要触发的函数
+    this.get_information(this.tabSort, this.tabProp, 1, this.str);//需要触发的函数
   },
   methods: {
     //     numFilter(value) {
@@ -117,7 +119,7 @@ export default {
         this.tabSort = 0
       }
       this.tabProp = column.prop
-      this.get_information(this.tabSort, this.tabProp, 1)
+      this.get_information(this.tabSort, this.tabProp, 1, this.str)
     },
 
     // 搜索查询数据
@@ -224,26 +226,33 @@ export default {
           });
         });
     },
-    get_information(tabSort, tabProp, pagenumber) {
+    get_information(tabSort, tabProp, pagenumber, str) {
+      this.str = str;
       console.log(tabSort);
       console.log(tabProp);
+      console.log(str);
       this.$axios.get('/api/admin/list_user', {
         params: {
           pagenumber: pagenumber,
           pagesize: 12,
           sorttype: tabSort,
           sortname: tabProp,
+          name: str,
         }
       })
         .then(res => {
-           this.tableData.length=0;
+          this.tableData.length = 0;
           console.log(res)
           if (res.data.ret === 0) {
             // this.tableData=[{name:res.data.num.name,numm:res.data.num.numm}]
             // console.log(res.data)
+            console.log(this.tableData)
             var i;
-            for (i = 0; i < res.data.list.length; i++) {
-              this.tableData.push({
+            if (res.data.list.length === 0) {
+              this.tableData = [];
+            } else {
+              for (i = 0; i < res.data.list.length; i++) {
+                this.tableData.push({
                   id: res.data.list[i].id,
                   name: res.data.list[i].name,
                   numc: res.data.list[i].numc,
@@ -252,11 +261,13 @@ export default {
                   right_choice_que: res.data.list[i].right_choice_que,
                   right_cloze_que: res.data.list[i].right_cloze_que,
                   right_reading_que: res.data.list[i].right_reading_que,
-                  cloze_rate:(res.data.list[i].right_cloze_que/res.data.list[i].numc*100).toFixed(1),
-                read_rate:(res.data.list[i].right_reading_que/res.data.list[i].numr*100).toFixed(1),
-                m_rate:(res.data.list[i].right_choice_que/res.data.list[i].numm*100).toFixed(1),
+                  cloze_rate: (res.data.list[i].right_cloze_que / res.data.list[i].numc * 100).toFixed(1),
+                  read_rate: (res.data.list[i].right_reading_que / res.data.list[i].numr * 100).toFixed(1),
+                  m_rate: (res.data.list[i].right_choice_que / res.data.list[i].numm * 100).toFixed(1),
                 })
+              }
             }
+            console.log(this.tableData)
             // this.tableData = res.data.list;
             this.total = res.data.total;
             // console.log(res)
@@ -265,13 +276,7 @@ export default {
     },
     // 分页页码
     changePage(num) {
-      if (this.type === 1) {
-        this.get_information(this.tabSort, this.tabProp, num)
-      } else {
-
-        this.searchinput(this.val, num)
-      }
-
+      this.get_information(this.tabSort, this.tabProp, num, this.str)
     }
   }
 
