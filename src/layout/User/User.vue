@@ -65,7 +65,7 @@ export default {
   },
   data() {
     return {
-      tabSort: 0, //该字段代表升序还是降序 假设：0正序 1倒序
+      tabSort: 0, //该字段代表升序还是降序 假设：0正序 1倒序 2默认
       tabProp: "numc",//prop绑定的字段名
       input: '',
       tableData: [],
